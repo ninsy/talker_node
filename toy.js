@@ -14,5 +14,5 @@ ws.on('message', function incoming(data, flags) {
 });
 
 ws.on('close', function(data) {
-   
+
 });

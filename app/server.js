@@ -1,11 +1,11 @@
-var websocket = require('ws');
-var config = require('./config/config');
+import WebSocket from 'ws';
+import config from './config/config';
 
 var server;
 
 module.exports = function() {
     if(!server ){
-        server = new websocket.Server({
+        server = new WebSocket.Server({
             port: config.port,
             clientTracking: true,
         });
@@ -17,7 +17,7 @@ module.exports = function() {
         conn.on('message', function(msg) {
             console.log(`Received message: ${msg}`);
             server.clients.forEach(function each(client) {
-                if (client.readyState === websocket.OPEN) {
+                if (client.readyState === WebSocket.OPEN) {
                     client.send("PONG");
                 }
             });
