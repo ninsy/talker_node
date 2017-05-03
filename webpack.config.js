@@ -11,6 +11,7 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.IgnorePlugin(/\.(md|json)?$/),
         new webpack.BannerPlugin('require("source-map-support").install();',
             { raw: true, entryOnly: false }),
         new webpack.DefinePlugin({
