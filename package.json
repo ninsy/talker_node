@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "7.9.0"
+  },
   "scripts": {
     "start": "node build/backend.js",
     "postinstall": "webpack -p --config ./webpack.config.js --progress",
