@@ -16,6 +16,7 @@ let config = ((env = 'dev') => {
             port = process.env.PORT || 5000,
             expireTime = 24 * 60 * 10,
             databaseName = process.env.DB_NAME,
+            databasePass = process.env.DB_PASS,
             databaseOptions = {
                 dialect: "mysql",
                 host: process.env.DB_HOST,
@@ -40,6 +41,7 @@ let config = ((env = 'dev') => {
             secrets,
             sequelizeOptions: {
                 databaseName,
+                databasePass,
                 databaseOptions,
             },
         };

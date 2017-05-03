@@ -1,0 +1,26 @@
+
+
+ // [ 1 ] [ 201 ] [ jwt: 04823jdsaDSDS$#43mdsl4l3 ]
+
+
+ // TODO: okreslic rodziny pakietów, każdą możliwy pakiet do przesłania / uzyskania od serwera - do README.md
+
+
+ // TODO: rejestracja nowego usera
+
+ // na heroku wrzucic toy-server - jak dostanie "ping" -> zwracac "pong" dla wszystkich klientów
+
+ // heroku - statyczny url + port 80
+ // Android: na websocketcie przesyla w odpowiednio zanumerowanym pakiecie numer + zserializowany obiekt
+ // w odpowiedzi dostaje pakiet okreslajacy odpowiedz z serwera + kod odpowiedzi + ew. dodatkowe dane.
+
+ // w przypadku jak rejestracja sie powiedzie - zapisanie jwt do SharedPreferences / sqlite3
+
+
+
+  // [ 743 ] [ daskjadsljkasdnldas ]
+  // [ 7XX ] - msg
+  // [ 6XX ] - uer
+  // [ 5XX ] - chat grp
+
+  // [ 666 ] [ username: "dsadsa", pass: "sadads"]

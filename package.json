@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node build/backend.js",
+    "postinstall": "webpack -p --config ./webpack.config.js --progress",
     "build": "rimraf build && webpack --config ./webpack.config.js --progress --profile --colors",
     "nodemon": "nodemon index.js --exec babel-node --presets es2015",
     "test": "mocha --compilers js:babel-register"
@@ -13,7 +15,13 @@
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.24.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^4.0.0",
+    "jsonwebtoken": "^7.4.0",
+    "mysql": "^2.13.0",
     "protobufjs": "^6.7.3",
+    "sequelize": "^3.30.4",
+    "sequelize-cli": "^2.7.0",
     "source-map-support": "^0.4.15",
     "ws": "^2.3.1"
   },
