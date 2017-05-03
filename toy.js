@@ -1,6 +1,6 @@
 var websocket = require("ws");
 
-const ws = new websocket('ws://127.0.0.1:5000');
+const ws = new websocket('ws://talker-node.herokuapp.com');
 
 ws.on('open', function open() {
     ws.send('ping');

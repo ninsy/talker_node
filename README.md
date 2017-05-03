@@ -1,4 +1,6 @@
 
+ // osobny config do webpacka na prod + odpowienia zmiana komendy odpalanej
+ // w npm postinstall - zamiast opcji "-p" uzyc Bablify do minifikacji
 
  // [ 1 ] [ 201 ] [ jwt: 04823jdsaDSDS$#43mdsl4l3 ]
 
@@ -15,8 +17,6 @@
  // w odpowiedzi dostaje pakiet okreslajacy odpowiedz z serwera + kod odpowiedzi + ew. dodatkowe dane.
 
  // w przypadku jak rejestracja sie powiedzie - zapisanie jwt do SharedPreferences / sqlite3
-
-
 
   // [ 743 ] [ daskjadsljkasdnldas ]
   // [ 7XX ] - msg
