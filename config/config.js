@@ -1,14 +1,14 @@
 //require("dotenv").config();
 
-import dev from "./dev";
-import prod from './prod';
+import development from "./dev";
+import production from './prod';
 
 const ENVS = {
-    dev,
-    prod,
+    development,
+    production,
 };
 
-let config = ((env = 'dev') => {
+let config = ((env = 'development') => {
 
     let options = ENVS[env.toLowerCase()] || {};
     {
