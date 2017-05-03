@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node build/backend.js",
-    "postinstall": "webpack -p --config ./webpack.config.js --progress",
+    "postinstall": "webpack --config ./webpack.config.js --progress",
     "build": "rimraf build && webpack --config ./webpack.config.js --progress --profile --colors",
     "nodemon": "nodemon index.js --exec babel-node --presets es2015",
     "test": "mocha --compilers js:babel-register"
@@ -17,7 +17,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel": "^6.23.0",
     "babel-core": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babili-webpack-plugin": "0.0.11",
     "bcryptjs": "^2.4.3",
     "dotenv": "^4.0.0",
     "jsonwebtoken": "^7.4.0",
