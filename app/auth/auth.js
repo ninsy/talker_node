@@ -1,63 +1,45 @@
-var jwt = require('jsonwebtoken');
-var expressJwt = require('express-jwt');
-var config = require('../config/config');
-var checkToken = expressJwt({ secret: config.secrets.jwt });
-var User = require('../models/db').User;
-
-
 import jwt from 'jsonwebtoken';
 import config from '../../config/config';
 import Models from '../models/db'
+import {EventEmitter} from 'events';
 
-class Auth {
-    static verifyToken(info, cb) {
-        let token = info.req.headers.token;
+class Auth extends EventEmitter {
+    static verifyToken({message}) {
+        let token = message.token;
         if(!token) {
             // TODO: replace with response packet
-            cb(false, 401, 'Unauthorized');
+            this.emit({status: 400, message: 'Unauthorized'});
         } else {
             jwt.verify(token, config.secrets.jwt, (err, decoded) => {
                 if(err) {
-                    cb(false, 401, 'Unauthorized');
+                    this.emit({status: 400, message: 'Unauthorized'});
                 } else {
-                    info.req.user = decoded;
-                    cb(true);
+                    message.user = decoded;
                 }
             })
         }
     }
-    static verifyUser({email, password}) {
-        if(!email || !password) {
-            return {status: 400, message: 'You need to provide both email and password'};
+    static verifyUser({message}) {
+        if(!message.email || !message.password) {
+            this.emit({status: 400, message: 'You need to provide both email and password'});
         }
-        Models.User.findById({where: { email: email}}).then(function())
-    }
-    static signUser(id) {
-        return jwt.sign(
-            {id: id},
-            config.secrets.jwt,
-            {expiresIn: config.expireTime}
-        );
-    }
-}
+        Models.User.findAll({where: {email: message.email}}).then(function(users) {
 
-export default Auth;
+            var user = users[0];
+            if(!user || !user.authenticate(message.password)) {
+                this.emit({ status: 401, message: 'Unauthorized'});
+            } else {
+                message.user = user;
+            }
+        }).catch(function(error) {
+            this.emit({status: 500, message: error.message});
+        })
 
-exports.decodeToken = function() {
-    return function(req, res, next) {
-        if(req.query && req.query.hasOwnProperty("access_token")) {
-            req.headers.authorization = `Bearer ${req.query.access_token}`;
-        }
-        checkToken(req, res, next);
     }
-};
-
-exports.getFreshUser = function() {
-    return function(req, res, next) {
-        console.log(`USER ID: ${req.user.id}`);
-        User.findById(req.user.id).then(function(user) {
+    static getFreshUser({message}) {
+        Models.User.findById(req.user.id).then(function(user) {
             if(!user) {
-                res.status(401).json({message: "Unauthorized"});
+                this.emit({status: 401, message: "Unauthorized"});
             } else {
                 req.user = user;
                 next();
@@ -66,38 +48,13 @@ exports.getFreshUser = function() {
             next(err);
         })
     }
-};
-
-exports.verifyUser = function() {
-    return function(req, res, next) {
-        var email = req.body.email;
-        var password = req.body.password;
-
-        if(!email || !password) {
-            res.status(400).json({message: "You need to provide both email and password"});
-            return;
-        }
-
-        User.findAll({where: {email: email}}).then(function(users) {
-
-            var user = users[0];
-
-            if(!user || !user.authenticate(password)) {
-                res.status(401).json({message: "Wrong password."});
-            } else {
-                req.user = user;
-                next();
-            }
-        }).catch(function(error) {
-            next(error);
-        })
+    static signUser({message}) {
+        return jwt.sign(
+            {id: message.id},
+            config.secrets.jwt,
+            {expiresIn: config.expireTime}
+        );
     }
-};
+}
 
-exports.signToken = function(id) {
-    return jwt.sign(
-        {id: id},
-        config.secrets.jwt,
-        {expiresIn: config.expireTime}
-    );
-};
+export default Auth;

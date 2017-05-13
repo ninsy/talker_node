@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="382876db-976f-4df5-925d-0f0001995dce" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/group_chat_member.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/privilege.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/models/message_receivers.js" afterPath="$PROJECT_DIR$/app/auth/auth.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/friendship.js" afterPath="$PROJECT_DIR$/app/models/friendship.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/group_chat.js" afterPath="$PROJECT_DIR$/app/models/group_chat.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/image.js" afterPath="$PROJECT_DIR$/app/models/image.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/message.js" afterPath="$PROJECT_DIR$/app/models/message.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/social.js" afterPath="$PROJECT_DIR$/app/models/social.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/user.js" afterPath="$PROJECT_DIR$/app/models/user.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/user_to_social.js" afterPath="$PROJECT_DIR$/app/models/user_to_social.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/auth/auth.js" afterPath="$PROJECT_DIR$/app/auth/auth.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -62,10 +51,10 @@
       <file leaf-file-name="auth.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/auth/auth.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-399">
-              <caret line="32" column="69" lean-forward="false" selection-start-line="32" selection-start-column="69" selection-end-line="32" selection-end-column="69" />
+            <state relative-caret-position="372">
+              <caret line="44" column="23" lean-forward="true" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
               <folding>
-                <element signature="e#222#253#0" expanded="true" />
+                <element signature="e#0#31#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -248,28 +237,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TalkerNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TalkerNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="packets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="6XX" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -787,12 +754,12 @@
       <workItem from="1493836069276" duration="12655000" />
       <workItem from="1494083050893" duration="673000" />
       <workItem from="1494368038239" duration="333000" />
-      <workItem from="1494686388304" duration="10811000" />
+      <workItem from="1494686388304" duration="13074000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39615000" />
+    <option name="totallyTimeSpent" value="41878000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1298,10 +1265,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/auth/auth.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-399">
-          <caret line="32" column="69" lean-forward="false" selection-start-line="32" selection-start-column="69" selection-end-line="32" selection-end-column="69" />
+        <state relative-caret-position="372">
+          <caret line="44" column="23" lean-forward="true" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
           <folding>
-            <element signature="e#222#253#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
