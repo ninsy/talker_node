@@ -1,4 +1,8 @@
 
+
+ // rx.js + typescript refactor
+ // Sequelize models into TS classes / method with decorators - how about Bookshelf.js?
+
  // osobny config do webpacka na prod + odpowienia zmiana komendy odpalanej
  // w npm postinstall - zamiast opcji "-p" uzyc Bablify do minifikacji
 

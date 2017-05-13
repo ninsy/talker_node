@@ -47,14 +47,12 @@ export default function(sequelize, DataTypes) {
         }
     });
 
-    User.Instance.prototype.toJSON = function () {
+    User.Instance.prototype.sanitize = function () {
         delete this.dataValues.password;
         return this.dataValues;
     };
 
     User.Instance.prototype.authenticate = function (plainTextPass) {
-        console.log(`ctx: ${this}, mail" ${this.dataValues.email}`);
-        console.log(`Plaintxt: ${plainTextPass}, hash: ${this.password}, fn: ${bcrypt.compareSync(plainTextPass, this.dataValues.password)}`);
         return bcrypt.compareSync(plainTextPass, this.password);
     };
 

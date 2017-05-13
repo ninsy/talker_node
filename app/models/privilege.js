@@ -3,7 +3,8 @@
 import Sequelize from "sequelize";
 
 export default function(sequelize, DataTypes) {
-    var Social = sequelize.define('Social', {
+
+    var Privilege = sequelize.define('Privilege', {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -12,8 +13,19 @@ export default function(sequelize, DataTypes) {
         },
         name: {
             type: Sequelize.STRING,
+        },
+        canRead: {
+            type: Sequelize.BOOLEAN,
             allowNull: false,
-        }
+        },
+        canWrite: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+        },
+        canExecute: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+        },
     }, {
         hooks: {
             beforeCreate: function (message, options) {
@@ -26,6 +38,5 @@ export default function(sequelize, DataTypes) {
             // }
         }
     });
-
-    return Social;
+    return Privilege;
 }
