@@ -3,7 +3,6 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    target: "node",
     entry: './index.js',
     output: {
         path: path.join(__dirname, 'build'),
@@ -28,5 +27,6 @@ module.exports = {
             }
         }]
     },
+    target: 'node',
     devtool: 'sourcemap',
 };

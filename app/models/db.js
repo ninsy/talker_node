@@ -14,7 +14,7 @@ fs
         return (file.indexOf(".") !== 0) && (file !== "db.js");
     })
     .forEach(function(file) {
-        let model = sequelize.import(path.join(__dirname, file));
+        let model = sequelize.import(pasth.join(__dirname, file));
         db[model.name] = model;
     });
 
@@ -32,12 +32,12 @@ setInterval(function () {
 }, 5000);
 
 
-// db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
-//     .then(function(){
-//         return db.sequelize.sync({force: true});
-//     })
-//     .then(function(){
-//         return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
-//     });
+db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
+    .then(function(){
+        return db.sequelize.sync({force: true});
+    })
+    .then(function(){
+        return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
+    });
 
 export default db;
