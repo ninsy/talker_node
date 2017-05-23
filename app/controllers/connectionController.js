@@ -1,9 +1,6 @@
 import { EventEmitter } from 'events';
 
-/**
- * Each instance represents WebSocket connection between NodeJS backend and AndroidApp
- * type: [ message, response, close, authenticate ] payload: [ code: [1-7][0-9], ...rest of stuff }
-  */
+
 class ConnectionController extends EventEmitter {
     constructor(connection, id) {
         super();
@@ -26,36 +23,28 @@ class ConnectionController extends EventEmitter {
 
     }
     onMessageHandler(message) {
+
+        /**
+         *  {
+         *      procedure: {
+         *          scope: 'user',
+         *          method: 'register'
+         *      },
+         *      meta: {
+         *          jwt: '',
+         *      },
+         *      payload: {
+         *
+         *      }
+         *  }
+         */
+
         let event = JSON.parse(message);
-        /***
-        switch(true) {
-            case /^(1[0-9]{2})$/.test(event.code): {
-                // test purposes
-                break;
-            }
-            case /^(2[0-9]{2})$/.test(event.code): {
-                // responses from client
-                break;
-            }
-            case /^(3[0-9]{2})$/.test(event.code): {
-                // group chat / messages related
-                break;
-            }
-            case /^(4[0-9]{2})$/.test(event.code): {
-                // social / friendship related
-                break;
-            }
-            case /^(5[0-9]{2})$/.test(event.code): {
-                // user related
-                break;
-            }
-            case /^(6[0-9]{2})$/.test(event.code): {
-                // authentication related
-                break;
-            }
-        }
-         ****/
-        this.emit(event.type, event.payload);
+        this.emit(event.procedure, {
+            method: event.procedure.method,
+            payload: event.payload,
+            metadata: event.metadata,
+        });
     }
     onSendHandler(message) {
         this.connection.send(JSON.stringify(message));

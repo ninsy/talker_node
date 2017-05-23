@@ -5,14 +5,16 @@ let local = `localhost:5000`;
 
 const ws = new websocket(`ws://${local}`);
 
-var msg = {
-    type: 'auth',
-    payload: { token: 'XXX' }
-};
+    var msg = {
+        scope: 'user',
+        action: 'register',
+        jwt: '12345',
+        payload: { token: 'XXX' }
+    };
 
-ws.on('open', function open() {
-    ws.send(JSON.stringify(msg));
-});
+    ws.on('open', function open() {
+        ws.send(JSON.stringify(msg));
+    });
 
 ws.on('message', function incoming(data, flags) {
     // flags.binary will be set if a binary data is received.
