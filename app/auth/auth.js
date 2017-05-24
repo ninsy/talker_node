@@ -1,56 +1,43 @@
 import jwt from 'jsonwebtoken';
 import config from '../../config/config';
 import Models from '../models/db'
-import {EventEmitter} from 'events';
 
-class Auth extends EventEmitter {
-    static verifyToken({message}) {
-        let token = message.token;
-        if(!token) {
-            // TODO: replace with response packet
-            this.emit({status: 400, message: 'Unauthorized'});
-        } else {
-            jwt.verify(token, config.secrets.jwt, (err, decoded) => {
-                if(err) {
-                    this.emit({status: 400, message: 'Unauthorized'});
-                } else {
-                    message.user = decoded;
-                }
-            })
-        }
+class Auth {
+    static verifyToken({metadata}) {
+        return new Promise((resolve, reject) => {
+            let token = metadata.token;
+            if (!token) {
+                // TODO: replace with response packet
+                reject({status: 400, message: 'Unauthorized'});
+            } else {
+                jwt.verify(token, config.secrets.jwt, (err, decoded) => {
+                    if (err) {
+                        reject({status: 400, message: 'Unauthorized'});
+                    } else {
+                        resolve(decoded);
+                    }
+                })
+            }
+        });
     }
     static verifyUser({message}) {
-        if(!message.email || !message.password) {
-            this.emit({status: 400, message: 'You need to provide both email and password'});
+        if (!message.email || !message.password) {
+            return Promise.reject({status: 400, message: 'You need to provide both email and password'});
         }
-        Models.User.findAll({where: {email: message.email}}).then(function(users) {
-
-            var user = users[0];
-            if(!user || !user.authenticate(message.password)) {
-                this.emit({ status: 401, message: 'Unauthorized'});
+        return Models.User.findAll({where: {email: message.email}}).then(function (users) {
+            let user = users[0];
+            if (!user || !user.authenticate(message.password)) {
+                return {status: 401, message: 'Unauthorized'};
             } else {
-                message.user = user;
+                return user;
             }
-        }).catch(function(error) {
-            this.emit({status: 500, message: error.message});
-        })
-
-    }
-    static getFreshUser({message}) {
-        Models.User.findById(req.user.id).then(function(user) {
-            if(!user) {
-                this.emit({status: 401, message: "Unauthorized"});
-            } else {
-                req.user = user;
-                next();
-            }
-        }).catch(function(err) {
-            next(err);
+        }).catch(function (error) {
+            return {status: 500, message: error.message};
         })
     }
     static signToken(id) {
         return jwt.sign(
-            {id: message.id},
+            {id: id},
             config.secrets.jwt,
             {expiresIn: config.expireTime}
         );

@@ -8,6 +8,7 @@ class ConnectionController extends EventEmitter {
     constructor(connection, id) {
         super();
         this.connection = connection;
+        this.id = id;
         this.isAlive = true;
         // TODO: what should be contained in 'type' exactly? scope of action / remote procedure call ?
         //
@@ -85,7 +86,7 @@ class ConnectionController extends EventEmitter {
          *  }
          *
          */
-        if(target.id === this.assignedUser.id) {
+        if(target.id === this.assignedUser.id || target.id === this.id) {
             this.connection.send(JSON.stringify({status, payload}));
         }
     }

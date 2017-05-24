@@ -14,7 +14,8 @@ export default function(sequelize, DataTypes) {
             allowNull: false,
         },
         status: {
-            type: Sequelize.ENUM('pending', 'accepted', 'rejected')
+            type:   Sequelize.ENUM,
+            values: ['pending', 'accepted', 'rejected'],
         }
     }, {
         hooks: {

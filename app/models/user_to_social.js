@@ -12,6 +12,10 @@ export default function(sequelize, DataTypes) {
         socialId: {
             type: Sequelize.STRING,
             allowNull: false,
+        },
+        status: {
+            type:   Sequelize.ENUM,
+            values: ['pending', 'accepted', 'rejected'],
         }
     }, {
         hooks: {
