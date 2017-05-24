@@ -48,7 +48,7 @@ class Auth extends EventEmitter {
             next(err);
         })
     }
-    static signUser({message}) {
+    static signToken(id) {
         return jwt.sign(
             {id: message.id},
             config.secrets.jwt,

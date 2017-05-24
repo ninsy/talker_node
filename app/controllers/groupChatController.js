@@ -15,6 +15,21 @@ class groupChatController {
 
         privilegeService.setRole(privilegeService.ROLES.OWNER, this.creator.id);
     }
+    setPrivilege() {
+
+    }
+    onMessageRequest() {
+
+    }
+    onBroadcastRequest() {
+
+    }
+    onUserJoin() {
+
+    }
+    onUserQuit() {
+
+    }
 }
 
 export default  groupChatController;

@@ -1,6 +1,10 @@
-import socialGroupService from '../services/socialGroupService';
+import friendshipService from '../services/friendshipService';
 
 let instance = null;
+
+/**
+ *  All methods
+ */
 
 class socialController {
     constructor() {
@@ -9,19 +13,13 @@ class socialController {
         }
         return instance;
     }
-    createGroup() {
+    invieFriend({id}) {
 
     }
-    inviteMember() {
+    getFriendsList({id}) {
 
     }
-    getMembersList() {
-
-    }
-    removeMember() {
-
-    }
-    changeGroupInfo() {
+    removeFriend({id}) {
 
     }
 }

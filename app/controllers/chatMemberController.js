@@ -3,7 +3,15 @@
  */
 
 export default class chatMemberController {
-    constructor() {
+    constructor(UserInstance) {
+        this.id = UserInstance.dataValues.id;
+        this.username = UserInstance.dataValues.username;
+    }
+    sendMessage(content) {
 
     }
+    quitRoom() {
+
+    }
+
 }

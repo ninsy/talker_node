@@ -1,11 +1,13 @@
 import { EventEmitter } from 'events';
+import userController from './userController';
 
-
+/**
+ * Represents single connection
+ */
 class ConnectionController extends EventEmitter {
     constructor(connection, id) {
         super();
         this.connection = connection;
-        this.id = id;
         this.isAlive = true;
 
         // TODO: what should be contained in 'type' exactly? scope of action / remote procedure call ?
@@ -18,13 +20,16 @@ class ConnectionController extends EventEmitter {
             .on('pong', this.onPongHandler.bind(this))
 
             // CUSTOM, SELF-DEFINED EVENTS - might be converted into regular service calls.
-            .on('auth', this.onAuthenticateHandler.bind(this))
+            .on('login', this.assignUser.bind(this))
+            .on('user', this.onUserHandler.bind(this))
             .on('send', this.onSendHandler.bind(this))
 
     }
     onMessageHandler(message) {
 
         /**
+         *  REQUESTS
+         *
          *  {
          *      procedure: {
          *          scope: 'user',
@@ -37,16 +42,30 @@ class ConnectionController extends EventEmitter {
          *
          *      }
          *  }
+         *
+         *  RESPONSES
+         *
+         *  {
+         *      status: 200,
+         *      meta: {
+         *          target: target.id
+         *      },
+         *      payload: {
+         *          message: "whatever"
+         *      }
+         *  }
+         *
          */
 
         let event = JSON.parse(message);
-        this.emit(event.procedure, {
+        this.emit(event.procedure.user, {
             method: event.procedure.method,
             payload: event.payload,
             metadata: event.metadata,
         });
     }
     onSendHandler(message) {
+        // TODO: determine if proper target, by id.
         this.connection.send(JSON.stringify(message));
     }
     onPongHandler() {
@@ -62,8 +81,13 @@ class ConnectionController extends EventEmitter {
     onTimeoutHandler()  {
         this.connection.terminate();
     }
-    onAuthenticateHandler() {
-
+    onUserHandler({method, payload, metadata}) {
+        let userCtrl = new userController();
+        userCtrl.handleRequest({method, metadata, payload});
+    }
+    assignUser({user, token}) {
+        this.assignedUser = user;
+        this.assignedToken = token;
     }
 }
 
