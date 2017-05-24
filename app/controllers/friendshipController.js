@@ -6,7 +6,7 @@ let instance = null;
  *  All methods
  */
 
-class socialController {
+class friendshipController {
     constructor() {
         if(!instance) {
             instance = this;
@@ -22,6 +22,15 @@ class socialController {
     removeFriend({id}) {
 
     }
+    acceptFriendshipInvite() {
+
+    }
+    rejectFriendshipInvite() {
+
+    }
+    getInvitesList() {
+
+    }
 }
 
-export default socialController;
+export default friendshipController;

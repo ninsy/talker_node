@@ -24,6 +24,12 @@ class socialController {
     changeGroupInfo() {
 
     }
+    acceptInvite() {
+
+    }
+    rejectInvite() {
+
+    }
 }
 
 export default socialController;

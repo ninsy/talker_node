@@ -10,17 +10,26 @@ export default class responseController extends EventEmitter {
         }
         return instance;
     }
-    emitResponse(targetArr ,{status, metadata, payload}) {
-        if(target === undefined || ( status === undefined && metadata === undefined && payload === undefined)) {
+    emitResponse({status, payload},  ...targets) {
+        if(targets === undefined || !targets.length ||( status === undefined && payload === undefined)) {
             return;
         }
-        // TODO: if target === -1 - return to self ( person who requested )
-        targetArr.forEach((target) => {
-            this.emit(status, {
-                metadata: {
-                    target: target.id
-                }
+        targets.forEach((target) => {
+            this.emit('send', {
+                status,
+                target,
+                payload,
             });
         });
+    }
+    emitError({status, payload}, target) {
+        if(targets === undefined || !targets.length ||( status === undefined && payload === undefined)) {
+            return;
+        }
+        this.emit('error', {
+            status,
+            target,
+            payload,
+        })
     }
 }

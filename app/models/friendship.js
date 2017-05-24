@@ -12,6 +12,9 @@ export default function(sequelize, DataTypes) {
         personReceiverId: {
             type: Sequelize.INTEGER,
             allowNull: false,
+        },
+        status: {
+            type: Sequelize.ENUM('pending', 'accepted', 'rejected')
         }
     }, {
         hooks: {

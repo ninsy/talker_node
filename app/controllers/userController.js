@@ -49,7 +49,7 @@ class userController {
     getInfo() {
 
     }
-    handleRequest({method, metadata, payload}) {
+    handleRequest(connection, {method, metadata, payload}) {
         switch(method) {
             case 'register': {
                 this.register(payload);
@@ -60,16 +60,19 @@ class userController {
                 break;
             }
             case 'getInfo': {
+                if(!connection.assignedUser) {
+
+                }
                 this.getInfo(payload);
                 break;
             }
             default: {
-                this.responseCtrl.emitResponse(-1, {
+                this.responseCtrl.emitError({
                     status: 400,
                     payload: {
                         message: `Method ${method} doesn't exist in user context.`
                     }
-                })
+                }, connection)
             }
         }
 

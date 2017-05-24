@@ -9,20 +9,25 @@ class ConnectionController extends EventEmitter {
         super();
         this.connection = connection;
         this.isAlive = true;
-
         // TODO: what should be contained in 'type' exactly? scope of action / remote procedure call ?
         //
-
         this.connection
             // WebSocket Events
             .on('message', this.onMessageHandler.bind(this))
             .on('close', this.onCloseHandler.bind(this))
             .on('pong', this.onPongHandler.bind(this))
+            .on('timeout', this.onTimeoutHandler.bind(this))
 
-            // CUSTOM, SELF-DEFINED EVENTS - might be converted into regular service calls.
-            .on('login', this.assignUser.bind(this))
-            .on('user', this.onUserHandler.bind(this))
+            // Server mechanisms
             .on('send', this.onSendHandler.bind(this))
+            .on('login', this.assignUser.bind(this))
+
+            // CUSTOM, SELF-DEFINED SCOPES
+            .on('user', this.onUserScope.bind(this))
+            .on('message', this.onMessageScope.bind(this))
+            .on('friendship', this.onFrendshipScope.bind(this))
+            .on('social', this.onSocialScope.bind(this))
+            .on('groupChat', this.onGroupChatScope.bind(this))
 
     }
     onMessageHandler(message) {
@@ -43,30 +48,14 @@ class ConnectionController extends EventEmitter {
          *      }
          *  }
          *
-         *  RESPONSES
-         *
-         *  {
-         *      status: 200,
-         *      meta: {
-         *          target: target.id
-         *      },
-         *      payload: {
-         *          message: "whatever"
-         *      }
-         *  }
-         *
          */
 
         let event = JSON.parse(message);
-        this.emit(event.procedure.user, {
+        this.emit(event.procedure.scope, {
             method: event.procedure.method,
             payload: event.payload,
             metadata: event.metadata,
         });
-    }
-    onSendHandler(message) {
-        // TODO: determine if proper target, by id.
-        this.connection.send(JSON.stringify(message));
     }
     onPongHandler() {
         this.isAlive = true;
@@ -81,14 +70,33 @@ class ConnectionController extends EventEmitter {
     onTimeoutHandler()  {
         this.connection.terminate();
     }
-    onUserHandler({method, payload, metadata}) {
-        let userCtrl = new userController();
-        userCtrl.handleRequest({method, metadata, payload});
+    onSendHandler({target, status, payload}) {
+        // TODO: determine if proper target, by id.
+        /**
+         *      *  RESPONSES
+         *
+         *  {
+         *      status: 200,
+         *      meta: {
+         *      },
+         *      payload: {
+         *          message: "whatever"
+         *      }
+         *  }
+         *
+         */
+        if(target.id === this.assignedUser.id) {
+            this.connection.send(JSON.stringify({status, payload}));
+        }
     }
-    assignUser({user, token}) {
+    assignUser(user) {
         this.assignedUser = user;
-        this.assignedToken = token;
     }
+    onUserScope({method, payload, metadata}) {
+        let userCtrl = new userController();
+        userCtrl.handleRequest(this.assignedUser, {method, metadata, payload});
+    }
+
 }
 
 export default ConnectionController;
