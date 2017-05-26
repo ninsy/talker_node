@@ -1,8 +1,8 @@
 "use strict";
 
-import Sequelize from "sequelize";
+let Sequelize  = require("sequelize");
 
-export default function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
 
     var Privilege = sequelize.define('Privilege', {
         id: {

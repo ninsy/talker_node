@@ -1,5 +1,5 @@
-import { EventEmitter } from 'events';
-import userController from './userController';
+let EventEmitter = require('events').EventEmitter;
+let userController = require('./userController');
 
 /**
  * Represents single connection
@@ -100,4 +100,4 @@ class ConnectionController extends EventEmitter {
 
 }
 
-export default ConnectionController;
+module.exporst = ConnectionController;

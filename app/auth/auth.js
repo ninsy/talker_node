@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
-import config from '../../config/config';
-import Models from '../models/db'
+let jwt = require('jsonwebtoken');
+let config = require('../../config/config');
+let Models = require('../models/db');
 
 class Auth {
     static verifyToken({metadata}) {
@@ -44,4 +44,4 @@ class Auth {
     }
 }
 
-export default Auth;
+module.exports =  Auth;

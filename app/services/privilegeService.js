@@ -1,6 +1,6 @@
-import Models from '../models/db';
-import _ from 'lodash';
-import sequelize from 'sequelize';
+let Models  = require('../models/db');
+let _  = require('lodash');
+let sequelize  = require('sequelize');
 
 let instance = null;
 
@@ -8,7 +8,7 @@ let instance = null;
  * priviledges in form of [ READ, WRITE, EXECUTE ]
  */
 
-export default class privilegeService {
+class privilegeService {
     constructor() {
         if(!instance) {
             instance = this;
@@ -26,3 +26,5 @@ export default class privilegeService {
         }
     }
 }
+
+module.exports = privilegeService;

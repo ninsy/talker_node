@@ -1,8 +1,8 @@
-import { EventEmitter } from 'events';
+let EventEmitter = require('events').EventEmitter;
 
 let instance = null;
 
-export default class responseController extends EventEmitter {
+class responseController extends EventEmitter {
     constructor() {
         if(!instance) {
             super();
@@ -33,3 +33,5 @@ export default class responseController extends EventEmitter {
         })
     }
 }
+
+module.exports = responseController;

@@ -1,4 +1,4 @@
-import userController from './userController';
+let userController = require('./userController');
 
 export default class userEntityController {
     constructor(userEntity, token) {

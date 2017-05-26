@@ -1,5 +1,5 @@
-import WebSocket from 'ws';
-import connectionController from "./controllers/connectionController";
+let WebSocket = require('ws');
+let connectionController = require('./controllers/connectionController');
 
 // TODO: in future, refactor into websocket-rpc boilerplate, preferably based on TS ( with both JSON/Protobuf )
 
@@ -49,4 +49,4 @@ class App {
     }
 }
 
-export default App;
+module.exports = App;

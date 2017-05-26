@@ -1,8 +1,7 @@
-import userService from '../services/userService';
-import imageService from '../services/imageService';
-import responseController from "./responseController";
-import Auth from "../auth/auth";
-
+let userService = require('../services/userService');
+let imageService = require('../services/imageService');
+let responseController = require("./responseController");
+let Auth = require("../auth/auth");
 
 /**
  * Just a facade between connection and service - singleton fits here.
@@ -117,4 +116,4 @@ class userController {
     }
 }
 
-export default userController;
+module.exports = userController;

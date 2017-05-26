@@ -1,9 +1,9 @@
 "use strict";
 
-import bcrypt from "bcryptjs";
-import Sequelize from "sequelize";
+let bcrypt  = require("bcryptjs");
+let Sequelize  = require("sequelize");
 
-export default function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
     var User = sequelize.define("User", {
         id: {
             type: Sequelize.INTEGER,
@@ -24,7 +24,7 @@ export default function(sequelize, DataTypes) {
             type: Sequelize.STRING,
             allowNull: false
         },
-        avatarId: {},
+        avatarId: {type: Sequelize.INTEGER},
         username: {type: Sequelize.STRING},
     }, {
         hooks: {
@@ -41,9 +41,11 @@ export default function(sequelize, DataTypes) {
             }
         },
         classMethods: {
-            // associate: function(models) {
-            //     User.hasMany(models.UserChosenDelivery);
-            // }
+            associate: function(models) {
+                User.hasMany(models.Image, {
+                    foreignKey: 'avatarId'
+                });
+            }
         }
     });
 
