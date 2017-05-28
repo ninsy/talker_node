@@ -60,11 +60,10 @@ ws.on('message', function incoming(data, flags) {
     }
 });
 
-ws.on('error', ({status, target, payload}) => {
+ws.on('error', (data) => {
     console.error("ERROR OCCURRED!");
-    console.log(status);
-    console.log(target);
-    console.log(payload);
+    //data = JSON.parse(data);
+    console.log(data);
 });
 
 ws.on('close', function(data) {

@@ -24,7 +24,7 @@ class ConnectionController extends EventEmitter {
 
             // Server mechanisms
             .on('send', this.onSendHandler.bind(this))
-            .on('login', this.assignUser.bind(this))
+            .on('appError', this.onAppErrorHandler.bind(this))
 
             // SIGNIN / REGISTER STUFF
             .on('auth', this.onAuthScope.bind(this))
@@ -47,7 +47,7 @@ class ConnectionController extends EventEmitter {
         console.log(`${event.procedure.scope} being emitted`);
 
         if(event.procedure.scope !== 'auth') {
-            new authService().verifyToken({metadata: event.metadata})
+            return new authService().verifyToken({metadata: event.metadata})
                 .then(() => {
                     this.connection.emit(event.procedure.scope, {
                         method: event.procedure.method,
@@ -56,12 +56,18 @@ class ConnectionController extends EventEmitter {
                     });
                 })
                 .catch(() => {
-                    return new responseController().emitError({
+                    this.connection.emit('appError', {
                         status: 403,
                         payload: {
                             message: 'Unauthorized',
                         }
-                    })
+                    });
+                    // return new responseController().emitError({
+                    //     status: 403,
+                    //     payload: {
+                    //         message: 'Unauthorized',
+                    //     }
+                    // }, this);
                 });
         }
         this.connection.emit(event.procedure.scope, {
@@ -86,8 +92,8 @@ class ConnectionController extends EventEmitter {
     onSendHandler({status, payload}) {
         this.connection.send(JSON.stringify({status, payload}));
     }
-    assignUser(user) {
-        this.assignedUser = user;
+    onAppErrorHandler({status = 500, payload = {message: 'Something went wrong'}}) {
+        this.connection.send(JSON.stringify({status, payload}));
     }
     onUserScope({method, payload, metadata}) {
         let userCtrl = new userController();

@@ -27,24 +27,6 @@ class userController {
     }
     handleRequest(connection, {method, metadata, payload}) {
         switch (method) {
-            case 'signin': {
-                this.signin(payload).then((token) => {
-                    this.responseCtrl.emitResponse({
-                        status: 200,
-                        payload: {
-                            token,
-                        }
-                    }, connection);
-                }).catch((err) => {
-                    this.responseCtrl.emitError({
-                        status: err.status || 400,
-                        payload: {
-                            message: err,
-                        }
-                    }, connection)
-                });
-                break;
-            }
             case 'getInfo': {
                 this.getInfo(payload);
                 break;

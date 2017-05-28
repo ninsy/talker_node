@@ -1,4 +1,9 @@
 let instance = null;
+
+let requiredConnectionParamEmitError = () => {
+    throw `Method emitError must receive target [ connectionController ] parameter!`;
+};
+
 class responseController {
     constructor() {
         if(!instance) {
@@ -6,7 +11,7 @@ class responseController {
         }
         return instance;
     }
-    emitResponse({status, payload},  ...targets) {
+    emitResponse({status, payload},  ...targets ) {
         if(targets === undefined || !targets.length ||( status === undefined && payload === undefined)) {
             return;
         }
@@ -17,11 +22,11 @@ class responseController {
             });
         });
     }
-    emitError({status, payload}, target) {
-        if(target === undefined || !target.length ||( status === undefined && payload === undefined)) {
+    emitError({status, payload}, target = requiredConnectionParamEmitError()) {
+        if(target === undefined) {
             return;
         }
-        target.connection.emit('error', {
+        target.connection.emit('appError', {
             status,
             payload,
         });
