@@ -21,7 +21,7 @@ class responseController {
         if(target === undefined || !target.length ||( status === undefined && payload === undefined)) {
             return;
         }
-        target.emit('error', {
+        target.connection.emit('error', {
             status,
             payload,
         });
