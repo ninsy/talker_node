@@ -1,5 +1,8 @@
 let EventEmitter = require('events').EventEmitter;
 let userController = require('./userController');
+let responseController = require('./responseController');
+let authService = require('../auth/authService');
+let authCtrl = require('../auth/authController');
 
 /**
  * Represents single connection
@@ -23,7 +26,10 @@ class ConnectionController extends EventEmitter {
             .on('send', this.onSendHandler.bind(this))
             .on('login', this.assignUser.bind(this))
 
-            // CUSTOM, SELF-DEFINED SCOPES
+            // SIGNIN / REGISTER STUFF
+            .on('auth', this.onAuthScope.bind(this))
+
+            // CUSTOM, SELF-DEFINED SCOPES - ASSUMING THAT AT THIS POINT USER HAS BEEN AUTHORIZED
             .on('user', this.onUserScope.bind(this))
             .on('chatMessage', this.onMessageScope.bind(this))
             .on('friendship', this.onFrendshipScope.bind(this))
@@ -31,42 +37,38 @@ class ConnectionController extends EventEmitter {
             .on('groupChat', this.onGroupChatScope.bind(this))
 
     }
+    onAuthScope({method, payload, metadata}) {
+        new authCtrl().handleRequest({method, payload, metadata}).then((user) => {
+            this.assignedUser = user;
+        });
+    }
     onMessageHandler(message) {
-
-        /**
-         *  REQUESTS
-         *
-         *  {
-         *      procedure: {
-         *          scope: 'user',
-         *          method: 'register'
-         *      },
-         *      meta: {
-         *          jwt: '',
-         *      },
-         *      payload: {
-         *
-         *      }
-         *  }
-         *
-         */
-
         let event = JSON.parse(message);
         console.log(`${event.procedure.scope} being emitted`);
 
+        if(event.procedure.scope !== 'auth') {
+            new authService().verifyToken({metadata: event.metadata})
+                .then(() => {
+                    this.connection.emit(event.procedure.scope, {
+                        method: event.procedure.method,
+                        payload: event.payload,
+                        metadata: event.metadata,
+                    });
+                })
+                .catch(() => {
+                    return new responseController().emitError({
+                        status: 403,
+                        payload: {
+                            message: 'Unauthorized',
+                        }
+                    })
+                });
+        }
         this.connection.emit(event.procedure.scope, {
             method: event.procedure.method,
             payload: event.payload,
             metadata: event.metadata,
         });
-
-        /**
-        this.emit(event.procedure.scope, {
-            method: event.procedure.method,
-            payload: event.payload,
-            metadata: event.metadata,
-        });
-         **/
     }
     onPongHandler() {
         this.isAlive = true;
@@ -81,28 +83,13 @@ class ConnectionController extends EventEmitter {
     onTimeoutHandler()  {
         this.connection.terminate();
     }
-    onSendHandler({target, status, payload}) {
-        // TODO: determine if proper target, by id.
-        /**
-         *      *  RESPONSES
-         *
-         *  {
-         *      status: 200,
-         *      meta: {
-         *      },
-         *      payload: {
-         *          message: "whatever"
-         *      }
-         *  }
-         *
-         */
+    onSendHandler({status, payload}) {
         this.connection.send(JSON.stringify({status, payload}));
     }
     assignUser(user) {
         this.assignedUser = user;
     }
     onUserScope({method, payload, metadata}) {
-        console.log("BUMP");
         let userCtrl = new userController();
         userCtrl.handleRequest(this, {method, metadata, payload});
     }

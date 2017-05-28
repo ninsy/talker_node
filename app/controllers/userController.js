@@ -1,7 +1,6 @@
 let userService = require('../services/userService');
 let imageService = require('../services/imageService');
 let responseController = require("./responseController");
-let Auth = require("../auth/auth");
 
 /**
  * Just a facade between connection and service - singleton fits here.
@@ -21,49 +20,13 @@ class userController {
         }
         return instance;
     }
-
-    register({username, email, password,}) {
-        return userService.register({username, password, email})
-            .then((freshUser) =>  Auth.signToken(freshUser.id));
-    }
-
-    signin({email, password}) {
-        return Auth.verifyUser({email, password})
-            .then((verifiedUser) => Auth.signToken(verifiedUser.id));
-    }
     getInfo() {
     }
-    update(requester, {payload, metadata}) {
-        return Auth.verifyToken(metadata)
-            .then((decodedUser) => {
-                if (decodedUser.id !== requester.id) {
-                    return Promise.reject({status: 401});
-                }
-                else {
-                    return userService.update(decodedUser, payload);
-                }
-            })
+    update(requester, {payload}) {
+        return userService.update(requester, payload);
     }
     handleRequest(connection, {method, metadata, payload}) {
         switch (method) {
-            case 'register': {
-                this.register(payload).then((token) => {
-                    this.responseCtrl.emitResponse({
-                        status: 200,
-                        payload: {
-                            token
-                        }
-                    }, connection);
-                }).catch((err) => {
-                    this.responseCtrl.emitError({
-                        status: err.status || 400,
-                        payload: {
-                            message: err,
-                        }
-                    }, connection)
-                });
-                break;
-            }
             case 'signin': {
                 this.signin(payload).then((token) => {
                     this.responseCtrl.emitResponse({
@@ -109,7 +72,7 @@ class userController {
                     status: 400,
                     payload: {
                         message: `Method ${method} doesn't exist in user context.`
-                    }
+                }
                 }, connection)
             }
         }

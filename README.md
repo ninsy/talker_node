@@ -1,5 +1,31 @@
-
-
+    REQUESTS
+    
+    {
+       procedure: {
+           scope: 'user',
+           method: 'register'
+       },
+       meta: {
+           jwt: '',
+       },
+       payload: {
+    
+       }
+    }
+    
+       RESPONSES
+     
+       {
+           status: 200,
+           meta: {
+           },
+           payload: {
+               message: "whatever"
+           }
+       }
+         
+         
+         
  // rx.js + typescript refactor
  // Sequelize models into TS classes / method with decorators - how about Bookshelf.js?
 
