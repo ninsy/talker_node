@@ -33,7 +33,7 @@ class userController {
     }
     getInfo() {
     }
-    updateInfo(requester, {payload, metadata}) {
+    update(requester, {payload, metadata}) {
         return Auth.verifyToken(metadata)
             .then((decodedUser) => {
                 if (decodedUser.id !== requester.id) {
@@ -49,7 +49,7 @@ class userController {
             case 'register': {
                 this.register(payload).then((token) => {
                     this.responseCtrl.emitResponse({
-                        status: err.status || 200,
+                        status: 200,
                         payload: {
                             token
                         }
@@ -86,8 +86,8 @@ class userController {
                 this.getInfo(payload);
                 break;
             }
-            case 'updateInfo': {
-                this.updateInfo(connection.assignedUser, {payload, metadata}).then((updatedUser) => {
+            case 'update': {
+                this.update(connection.assignedUser, {payload, metadata}).then((updatedUser) => {
                     this.responseCtrl.emitResponse({
                         status: 200,
                         payload: {

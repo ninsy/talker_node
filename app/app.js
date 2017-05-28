@@ -26,7 +26,6 @@ class App {
     spawnConn(ws) {
         let newConn = new connectionController(ws, ID++);
         this.clients[newConn.id] = newConn;
-        this.broadcast({type: 'message', payload: { message: 'NEW FOLK'}});
     }
     checkTimeout() {
         setInterval(() => {

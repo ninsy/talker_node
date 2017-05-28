@@ -1,11 +1,7 @@
-let EventEmitter = require('events').EventEmitter;
-
 let instance = null;
-
-class responseController extends EventEmitter {
+class responseController {
     constructor() {
         if(!instance) {
-            super();
             instance = this;
         }
         return instance;
@@ -15,22 +11,20 @@ class responseController extends EventEmitter {
             return;
         }
         targets.forEach((target) => {
-            this.emit('send', {
+            target.connection.emit('send', {
                 status,
-                target,
                 payload,
             });
         });
     }
     emitError({status, payload}, target) {
-        if(targets === undefined || !targets.length ||( status === undefined && payload === undefined)) {
+        if(target === undefined || !target.length ||( status === undefined && payload === undefined)) {
             return;
         }
-        this.emit('error', {
+        target.emit('error', {
             status,
-            target,
             payload,
-        })
+        });
     }
 }
 

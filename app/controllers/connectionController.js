@@ -25,7 +25,7 @@ class ConnectionController extends EventEmitter {
 
             // CUSTOM, SELF-DEFINED SCOPES
             .on('user', this.onUserScope.bind(this))
-            .on('message', this.onMessageScope.bind(this))
+            .on('chatMessage', this.onMessageScope.bind(this))
             .on('friendship', this.onFrendshipScope.bind(this))
             .on('social', this.onSocialScope.bind(this))
             .on('groupChat', this.onGroupChatScope.bind(this))
@@ -52,11 +52,21 @@ class ConnectionController extends EventEmitter {
          */
 
         let event = JSON.parse(message);
+        console.log(`${event.procedure.scope} being emitted`);
+
+        this.connection.emit(event.procedure.scope, {
+            method: event.procedure.method,
+            payload: event.payload,
+            metadata: event.metadata,
+        });
+
+        /**
         this.emit(event.procedure.scope, {
             method: event.procedure.method,
             payload: event.payload,
             metadata: event.metadata,
         });
+         **/
     }
     onPongHandler() {
         this.isAlive = true;
@@ -86,18 +96,28 @@ class ConnectionController extends EventEmitter {
          *  }
          *
          */
-        if(target.id === this.assignedUser.id || target.id === this.id) {
-            this.connection.send(JSON.stringify({status, payload}));
-        }
+        this.connection.send(JSON.stringify({status, payload}));
     }
     assignUser(user) {
         this.assignedUser = user;
     }
     onUserScope({method, payload, metadata}) {
+        console.log("BUMP");
         let userCtrl = new userController();
-        userCtrl.handleRequest(this.assignedUser, {method, metadata, payload});
+        userCtrl.handleRequest(this, {method, metadata, payload});
     }
+    onMessageScope({method, payload, metadata}) {
 
+    }
+    onFrendshipScope({method, payload, metadata}) {
+
+    }
+    onSocialScope({method, payload, metadata}) {
+
+    }
+    onGroupChatScope({method, payload, metadata}) {
+
+    }
 }
 
-module.exporst = ConnectionController;
+module.exports = ConnectionController;
