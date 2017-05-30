@@ -7,8 +7,8 @@
     "node": "7.9.0"
   },
   "scripts": {
-    "start": "nodemon index.js",
-    "nodemon": "nodemon index.js --exec babel-node --presets es2015",
+    "start": "node index.js",
+    "nodemon": "nodemon index.js",
     "test": "mocha --compilers js:babel-register"
   },
   "keywords": [],
