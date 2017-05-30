@@ -39,17 +39,26 @@ class ConnectionController extends EventEmitter {
 
     }
     onAuthScope({method, payload, metadata}) {
-        this.authCtrl.handleRequest(this, {method, payload, metadata}).then((user) => {
-            this.assignedUser = user;
-        });
+        this.authCtrl.handleRequest(this, {method, payload, metadata})
+            .then((freshUser) => {
+                this.assignedUser = freshUser.sanitize();
+            });
     }
     onMessageHandler(message) {
         let event = JSON.parse(message);
         console.log(`${event.procedure.scope} being emitted`);
 
         if(event.procedure.scope !== 'auth') {
-            return new authService().verifyToken({metadata: event.metadata})
-                .then(() => {
+            return new authService().verifyToken({metadata: event.meta})
+                .then(({id}) => {
+                    return this.assignedUser
+                        ? Promise.resolve()
+                        : new userController().getOne({id})
+                })
+                .then((user) => {
+                    if(user) {
+                        this.assignedUser = user.sanitize();
+                    }
                     this.connection.emit(event.procedure.scope, {
                         method: event.procedure.method,
                         payload: event.payload,
@@ -63,12 +72,6 @@ class ConnectionController extends EventEmitter {
                             message: 'Unauthorized',
                         }
                     });
-                    // return new responseController().emitError({
-                    //     status: 403,
-                    //     payload: {
-                    //         message: 'Unauthorized',
-                    //     }
-                    // }, this);
                 });
         }
         this.connection.emit(event.procedure.scope, {

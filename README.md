@@ -16,6 +16,10 @@
        RESPONSES
      
        {
+           prodecure: {
+              scope: 'user',
+              method: 'register',
+           }
            status: 200,
            meta: {
            },

@@ -20,41 +20,70 @@ class userController {
         }
         return instance;
     }
-    getInfo() {
+
+    getOne({id}) {
+        return userService.getOne({id});
     }
-    update(requester, {payload}) {
-        return userService.update(requester, payload);
+
+    me({assignedUser}) {
+        return userService.getOne({id: assignedUser.id})
     }
+
+    update({id, data}) {
+        return userService
+            .getOne({id})
+            .then((current) => userService.update({current, data}))
+    }
+
     handleRequest(connection, {method, metadata, payload}) {
         switch (method) {
-            case 'getInfo': {
-                this.getInfo(payload);
+            case 'me': {
+                this.me({assignedUser: connection.assignedUser}).then((self) => {
+                    this.responseCtrl.emitResponse({
+                        procedure: {method, scope: 'user'},
+                        status: 200,
+                        payload: self,
+                    }, connection);
+                });
+                break;
+            }
+            case 'getOne': {
+                this.getOne(payload).then((user) => {
+                    this.responseCtrl.emitResponse({
+                        procedure: {method, scope: 'user'},
+                        status: 200,
+                        payload: user,
+                    });
+                }).catch((err) => {
+                    this.responseCtrl.emitError({
+                        procedure: {method, scope: 'user'},
+                        status: 400,
+                        payload: err,
+                    })
+                });
                 break;
             }
             case 'update': {
-                this.update(connection.assignedUser, {payload, metadata}).then((updatedUser) => {
+                this.update(payload).then((updatedUser) => {
                     this.responseCtrl.emitResponse({
+                        procedure: {method, scope: 'user'},
                         status: 200,
-                        payload: {
-                            updatedUser,
-                        }
+                        payload: updatedUser,
                     }, connection);
                 }).catch((err) => {
                     this.responseCtrl.emitError({
+                        procedure: {method, scope: 'user'},
                         status: err.status || 400,
-                        payload: {
-                            message: err,
-                        }
+                        payload: err,
                     }, connection)
                 });
                 break;
             }
             default: {
                 this.responseCtrl.emitError({
+                    procedure: {method, scope: 'user'},
                     status: 400,
-                    payload: {
-                        message: `Method ${method} doesn't exist in user context.`
-                }
+                    payload: `Method ${method} doesn't exist in user context.`
                 }, connection)
             }
         }

@@ -17,48 +17,44 @@ class Auth {
                 return this.authService.signin({payload})
                     .then((token) => {
                         new responseCtrl().emitResponse({
+                            procedure: {method, scope: 'auth'},
                             status: 200,
-                            payload: {
-                                token
-                            }
+                            payload: token
                         }, connection);
                     }).catch((err) => {
                         new responseCtrl().emitError({
+                            procedure: {method, scope: 'auth'},
                             status: err.status || 400,
-                            payload: {
-                                message: err.message || err,
-                            }
+                            payload: err.message || err,
                         }, connection)
                     })
             }
             case 'register': {
                 return this.authService.register({payload})
-                    .then((token) => {
-                        new responseCtrl().emitResponse({
-                            status: 200,
-                            payload: {
-                                token
-                            }
+                    .then(({token, freshUser}) => {
+                         new responseCtrl().emitResponse({
+                             procedure: {method, scope: 'auth'},
+                             status: 200,
+                             payload: token,
                         }, connection);
+                        return freshUser;
                     }).catch((err) => {
                         if(err.message === 'SequelizeUniqueConstraintError') {
                             err.status = 409;
                             err.message = `User with provided credentials already exists.`
                         }
                         new responseCtrl().emitError({
+                            procedure: {method, scope: 'auth'},
                             status: err.status || 400,
-                            payload: {
-                                message: err.message || err,
-                            }
+                            payload: err.message || err,
                         }, connection)
                     });
             }
             default: {
                 return new responseCtrl().emitError({
+                    procedure: {method, scope: 'auth'},
                     status: 400,
-                    payload: {
-                        message: `Method ${method} doesn't exist in user context.`
-                    }
+                    payload: `Method ${method} doesn't exist in user context.`
                 }, connection);
             }
         }

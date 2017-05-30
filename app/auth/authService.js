@@ -59,7 +59,12 @@ class AuthService {
 
     register({payload}) {
         return userService.register(payload)
-            .then((freshUser) =>  this.signToken(freshUser.id))
+            .then((freshUser) =>  {
+                return {
+                    token: this.signToken(freshUser.id),
+                    freshUser,
+                }
+            })
 
     };
 }

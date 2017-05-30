@@ -1,11 +1,12 @@
 var websocket = require("ws");
 
 let heroku = `talker-node.herokuapp.com`;
-//let local = `localhost:5000`;
+let local = `localhost:5000`;
 
-let token = null;
+let token = null,
+    me = null;
 
-const ws = new websocket(`ws://${heroku}`);
+const ws = new websocket(`ws://${local}`);
 
 function registerMsg() {
     return {
@@ -24,7 +25,20 @@ function registerMsg() {
     };
 }
 
-function tryModify(token) {
+function getSelf(token) {
+    return {
+        procedure: {
+            scope: 'user',
+            method: 'me',
+        },
+        meta: {
+            token,
+        },
+        payload: {}
+    }
+}
+
+function tryModify(token, id) {
     return {
         procedure: {
             scope: 'user',
@@ -34,9 +48,12 @@ function tryModify(token) {
             token
         },
         payload: {
-            username: 'admin123',
-            password: 'admin123',
-            email: 'a@a.pl',
+            id,
+            data: {
+                username: 'admin123',
+                password: 'admin123',
+                email: 'a@a.pl',
+            }
         },
     };
 }
@@ -54,9 +71,13 @@ ws.on('message', function incoming(data, flags) {
     data = JSON.parse(data);
     console.log(data);
 
-    if(data.payload.token) {
-        token = data.payload.token;
-        ws.send(JSON.stringify(tryModify(token)));
+    if(data.procedure.method === 'register') {
+        token = data.payload;
+        ws.send(JSON.stringify(getSelf(token)));
+    }
+    else if(data.procedure.scope === 'user' && data.procedure.method === 'me') {
+        me = data.payload;
+        ws.send(JSON.stringify(tryModify(token, me.id)));
     }
 });
 
