@@ -93,8 +93,8 @@ class ConnectionController extends EventEmitter {
     onTimeoutHandler()  {
         this.connection.terminate();
     }
-    onSendHandler({status, payload}) {
-        this.connection.send(JSON.stringify({status, payload}));
+    onSendHandler(data) {
+        this.connection.send(JSON.stringify(data));
     }
     onAppErrorHandler({status = 500, payload = {message: 'Something went wrong'}}) {
         this.connection.send(JSON.stringify({status, payload}));
