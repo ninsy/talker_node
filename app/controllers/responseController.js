@@ -11,22 +11,24 @@ class responseController {
         }
         return instance;
     }
-    emitResponse({status, payload},  ...targets ) {
-        if(targets === undefined || !targets.length ||( status === undefined && payload === undefined)) {
+    emitResponse({procedure, status, payload},  ...targets ) {
+        if(procedure === undefined || targets === undefined || !targets.length ||( status === undefined && payload === undefined)) {
             return;
         }
         targets.forEach((target) => {
             target.connection.emit('send', {
+                procedure,
                 status,
                 payload,
             });
         });
     }
-    emitError({status, payload}, target = requiredConnectionParamEmitError()) {
-        if(target === undefined) {
+    emitError({procedure, status, payload}, target = requiredConnectionParamEmitError()) {
+        if(procedure === undefined || target === undefined) {
             return;
         }
         target.connection.emit('appError', {
+            procedure,
             status,
             payload,
         });
