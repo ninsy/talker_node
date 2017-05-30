@@ -1,8 +1,8 @@
-import Models from '../models/db';
-import _ from 'lodash';
-import sequelize from 'sequelize';
+let Models = require('../models/db');
+let _ = require('lodash');
+let sequelize = require('sequelize');
 
-export default class socialGroupService {
+class socialGroupService {
     static invite({socialId, ...personReceiverIds}) {
         let invitePromiseArr = personReceiverIds.map((userId) => Models.UserToSocial.create({where: {socialId, userId}}));
         return Promise.all(invitePromiseArr).then(() => {
@@ -53,3 +53,5 @@ export default class socialGroupService {
         });
     }
 };
+
+module.exports = socialGroupService;

@@ -1,7 +1,9 @@
-import Models from '../models/db';
-import _ from 'lodash';
-import sequelize from 'sequelize';
+let Models  = require('../models/db');
+let _  = require('lodash');
+let sequelize  = require('sequelize');
 
-export default class groupChatService {
+class groupChatService {
 
 };
+
+module.exports = groupChatService;

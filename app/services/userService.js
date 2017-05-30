@@ -1,8 +1,8 @@
-import Models from '../models/db';
-import _ from 'lodash';
-import sequelize from 'sequelize';
+let Models = require('../models/db');
+let _ = require('lodash');
+let sequelize = require('sequelize');
 
-export default class userService {
+class userService {
     static update(currentUser, { user }) {
         _.merge(currentUser, user);
         return currentUser.save();
@@ -15,3 +15,5 @@ export default class userService {
         });
     }
 };
+
+module.exports = userService;

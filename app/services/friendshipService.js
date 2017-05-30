@@ -1,8 +1,8 @@
-import Models from '../models/db';
-import _ from 'lodash';
-import sequelize from 'sequelize';
+let Models = require('../models/db');
+let _  = require('lodash');
+let sequelize  = require('sequelize');
 
-export default class friendshipService {
+class friendshipService {
     static invieFriend({personInitiatorId, personReceiverId}) {
         return Models.Friendship.create({
             personInitiatorId,
@@ -48,3 +48,5 @@ export default class friendshipService {
         });
     }
 };
+
+module.exports = friendshipService;

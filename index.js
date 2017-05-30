@@ -1,4 +1,4 @@
-import config from './config/config';
+let config = require('./config/config');
+let App = require('./app/app');
 
-import App from './app/app';
 let app = new App(config);

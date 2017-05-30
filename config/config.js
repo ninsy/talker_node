@@ -1,7 +1,7 @@
 //require("dotenv").config();
 
-import development from "./dev";
-import production from './prod';
+let development = require("./dev");
+let production = require('./prod');
 
 const ENVS = {
     development,
@@ -51,4 +51,4 @@ let config = ((env = 'development') => {
 
 })(process.env.NODE_ENV);
 
-export default config;
+module.exports = config;

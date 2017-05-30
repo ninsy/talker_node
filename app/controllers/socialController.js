@@ -1,4 +1,4 @@
-import socialGroupService from '../services/socialGroupService';
+let socialGroupService = require('../services/socialGroupService');
 
 let instance = null;
 

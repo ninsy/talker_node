@@ -1,8 +1,8 @@
-import groupChatService from '../services/groupChatService';
-import messageService from '../services/messageService';
-import friendshipService from '../services/friendshipService';
-import socialGroupService from '../services/socialGroupService';
-import privilegeService from '../services/privilegeService';
+let groupChatService = require('../services/groupChatService');
+let messageService = require('../services/messageService');
+let friendshipService = require('../services/friendshipService');
+let socialGroupService = require('../services/socialGroupService');
+let privilegeService = require('../services/privilegeService');
 
 /**
  * Each instance of it represents separate groupChat

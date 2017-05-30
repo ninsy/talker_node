@@ -1,9 +1,9 @@
 "use strict";
 
-import Sequelize from "sequelize";
-import Models from './db';
+let Sequelize = require("sequelize");
+let Models = require('./db');
 
-export default function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     var Friendship = sequelize.define('Friendship', {
         personInitiatorId: {
             type: Sequelize.INTEGER,
@@ -14,15 +14,13 @@ export default function(sequelize, DataTypes) {
             allowNull: false,
         },
         status: {
-            type:   Sequelize.ENUM,
+            type: Sequelize.ENUM,
             values: ['pending', 'accepted', 'rejected'],
         }
     }, {
-        hooks: {
-
-        },
+        hooks: {},
         classMethods: {
-            associate: function(Models) {
+            associate: function (Models) {
                 Friendship.belongsTo(Models.User, {
                     foreignKey: 'personInitiatorId',
                 });

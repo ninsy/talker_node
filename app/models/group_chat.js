@@ -1,9 +1,9 @@
 "use strict";
 
-import Sequelize from "sequelize";
-import Models from "./db";
+let Sequelize  = require("sequelize");
+let Models  = require("./db");
 
-export default function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
     var GroupChat = sequelize.define('GroupChat', {
         id: {
             type: Sequelize.INTEGER,

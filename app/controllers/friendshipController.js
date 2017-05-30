@@ -1,4 +1,4 @@
-import friendshipService from '../services/friendshipService';
+let friendshipService = require('../services/friendshipService');
 
 let instance = null;
 

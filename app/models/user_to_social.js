@@ -1,16 +1,16 @@
 "use strict";
 
-import Sequelize from "sequelize";
-import Models from "./db";
+let Sequelize  = require("sequelize");
+let Models  = require("./db");
 
-export default function(sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
     var UserToSocial = sequelize.define('UserToSocial', {
         userId: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
         socialId: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: false,
         },
         status: {
@@ -24,11 +24,11 @@ export default function(sequelize, DataTypes) {
             },
         },
         classMethods: {
-            associate: function(Models) {
-                UserToSocial.belongsTo(Models.User, {
+            associate: function(models) {
+                UserToSocial.belongsTo(models.User, {
                     foreignKey: 'userId',
                 });
-                UserToSocial.belongsTo(Models.Social, {
+                UserToSocial.belongsTo(models.Social, {
                     foreignKey: 'socialId',
                 })
             }

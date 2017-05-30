@@ -1,9 +1,9 @@
 "use strict";
 
-import Sequelize from "sequelize";
-import fs from "fs";
-import path from "path";
-import CONFIG from "../../config/config";
+let Sequelize = require("sequelize");
+let fs = require("fs");
+let path = require("path");
+let CONFIG = require("../../config/config");
 
 let sequelize = new Sequelize(CONFIG.sequelizeOptions.databaseName, CONFIG.sequelizeOptions.databaseOptions.user, CONFIG.sequelizeOptions.databasePass, CONFIG.sequelizeOptions.databaseOptions );
 
@@ -14,7 +14,7 @@ fs
         return (file.indexOf(".") !== 0) && (file !== "db.js");
     })
     .forEach(function(file) {
-        let model = sequelize.import(pasth.join(__dirname, file));
+        let model = sequelize.import(path.join(__dirname, file));
         db[model.name] = model;
     });
 
@@ -40,4 +40,4 @@ db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
         return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
     });
 
-export default db;
+module.exports = db;

@@ -1,5 +1,5 @@
-import WebSocket from 'ws';
-import connectionController from "./controllers/connectionController";
+let WebSocket = require('ws');
+let connectionController = require('./controllers/connectionController');
 
 // TODO: in future, refactor into websocket-rpc boilerplate, preferably based on TS ( with both JSON/Protobuf )
 
@@ -26,7 +26,6 @@ class App {
     spawnConn(ws) {
         let newConn = new connectionController(ws, ID++);
         this.clients[newConn.id] = newConn;
-        this.broadcast({type: 'message', payload: { message: 'NEW FOLK'}});
     }
     checkTimeout() {
         setInterval(() => {
@@ -49,4 +48,4 @@ class App {
     }
 }
 
-export default App;
+module.exports = App;

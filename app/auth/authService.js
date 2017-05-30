@@ -1,9 +1,25 @@
-import jwt from 'jsonwebtoken';
-import config from '../../config/config';
-import Models from '../models/db'
+let instance = null;
 
-class Auth {
-    static verifyToken({metadata}) {
+let jwt = require('jsonwebtoken');
+let config = require('../../config/config');
+let Models = require('../models/db');
+
+let userService = require('../services/userService');
+
+class AuthService {
+    constructor() {
+        if(!instance) {
+            instance = this;
+        }
+    }
+    signToken(id) {
+        return jwt.sign(
+            {id: id},
+            config.secrets.jwt,
+            {expiresIn: config.expireTime}
+        );
+    }
+    verifyToken({metadata}) {
         return new Promise((resolve, reject) => {
             let token = metadata.token;
             if (!token) {
@@ -19,8 +35,8 @@ class Auth {
                 })
             }
         });
-    }
-    static verifyUser({message}) {
+    };
+    verifyUser({message}) {
         if (!message.email || !message.password) {
             return Promise.reject({status: 400, message: 'You need to provide both email and password'});
         }
@@ -34,14 +50,18 @@ class Auth {
         }).catch(function (error) {
             return {status: 500, message: error.message};
         })
+
+    };
+    signin({email, password}) {
+        return this.verifyUser({email, password})
+            .then((verifiedUser) => this.signToken(verifiedUser.id));
     }
-    static signToken(id) {
-        return jwt.sign(
-            {id: id},
-            config.secrets.jwt,
-            {expiresIn: config.expireTime}
-        );
-    }
+
+    register({payload}) {
+        return userService.register(payload)
+            .then((freshUser) =>  this.signToken(freshUser.id))
+
+    };
 }
 
-export default Auth;
+module.exports = AuthService;
