@@ -5,6 +5,9 @@ let fs = require("fs");
 let path = require("path");
 let CONFIG = require("../../config/config");
 
+console.log("Loaded options: ");
+console.log(CONFIG);
+
 let sequelize = new Sequelize(CONFIG.sequelizeOptions.databaseName, CONFIG.sequelizeOptions.databaseOptions.user, CONFIG.sequelizeOptions.databasePass, CONFIG.sequelizeOptions.databaseOptions );
 
 let db = {};

@@ -1,11 +1,11 @@
 var websocket = require("ws");
 
 let heroku = `talker-node.herokuapp.com`;
-let local = `localhost:5000`;
+//let local = `localhost:5000`;
 
 let token = null;
 
-const ws = new websocket(`ws://${local}`);
+const ws = new websocket(`ws://${heroku}`);
 
 function registerMsg() {
     return {
