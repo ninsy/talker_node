@@ -13,6 +13,7 @@ class ConnectionController extends EventEmitter {
         this.connection = connection;
         this.id = id;
         this.isAlive = true;
+        this.authCtrl = new authCtrl();
         // TODO: what should be contained in 'type' exactly? scope of action / remote procedure call ?
         //
         this.connection
@@ -38,7 +39,7 @@ class ConnectionController extends EventEmitter {
 
     }
     onAuthScope({method, payload, metadata}) {
-        new authCtrl().handleRequest({method, payload, metadata}).then((user) => {
+        this.authCtrl.handleRequest(this, {method, payload, metadata}).then((user) => {
             this.assignedUser = user;
         });
     }

@@ -10,7 +10,7 @@ const ws = new websocket(`ws://${local}`);
 function registerMsg() {
     return {
         procedure: {
-            scope: 'user',
+            scope: 'auth',
             method: 'register',
         },
         meta: {
