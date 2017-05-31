@@ -8,6 +8,7 @@ let token = null,
 
 const ws = new websocket(`ws://${local}`);
 
+
 function registerMsg() {
     return {
         procedure: {
@@ -21,6 +22,19 @@ function registerMsg() {
             username: 'admin',
             password: 'admin',
             email: 'a@a.pl',
+        },
+    };
+}
+
+function login() {
+    return {
+        procedure: {
+            scope: 'auth',
+            method: 'signin',
+        },
+        payload: {
+            email: 'a@a.pl',
+            password: 'admin',
         },
     };
 }
@@ -73,6 +87,9 @@ ws.on('message', function incoming(data, flags) {
 
     if(data.procedure.method === 'register') {
         token = data.payload;
+        ws.send(JSON.stringify(login()));
+    }
+    else if(data.procedure.method === 'signin') {
         ws.send(JSON.stringify(getSelf(token)));
     }
     else if(data.procedure.scope === 'user' && data.procedure.method === 'me') {

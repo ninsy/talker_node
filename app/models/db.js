@@ -31,7 +31,7 @@ setInterval(function () {
     db.sequelize.query('SELECT 1');
 }, 5000);
 
-
+/*
 db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
     .then(function(){
         return db.sequelize.sync({force: true});
@@ -39,5 +39,6 @@ db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
     .then(function(){
         return db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1')
     });
+*/
 
 module.exports = db;

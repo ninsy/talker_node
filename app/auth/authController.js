@@ -14,25 +14,26 @@ class Auth {
     handleRequest(connection, {method, metadata, payload}) {
         switch(method) {
             case 'signin': {
-                return this.authService.signin({payload})
-                    .then((token) => {
+                return this.authService.signin(payload)
+                    .then(({token, verifiedUser}) => {
                         new responseCtrl().emitResponse({
                             procedure: {method, scope: 'auth'},
                             status: 200,
                             payload: token
                         }, connection);
+                        return verifiedUser;
                     }).catch((err) => {
                         new responseCtrl().emitError({
                             procedure: {method, scope: 'auth'},
                             status: err.status || 400,
                             payload: err.message || err,
                         }, connection)
-                    })
+                    });
             }
             case 'register': {
                 return this.authService.register({payload})
                     .then(({token, freshUser}) => {
-                         new responseCtrl().emitResponse({
+                          new responseCtrl().emitResponse({
                              procedure: {method, scope: 'auth'},
                              status: 200,
                              payload: token,

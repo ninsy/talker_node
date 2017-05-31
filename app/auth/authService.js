@@ -36,13 +36,13 @@ class AuthService {
             }
         });
     };
-    verifyUser({message}) {
-        if (!message.email || !message.password) {
+    verifyUser({email, password}) {
+        if (!email || !password) {
             return Promise.reject({status: 400, message: 'You need to provide both email and password'});
         }
-        return Models.User.findAll({where: {email: message.email}}).then(function (users) {
+        return Models.User.findAll({where: {email: email}}).then(function (users) {
             let user = users[0];
-            if (!user || !user.authenticate(message.password)) {
+            if (!user || !user.authenticate(password)) {
                 return {status: 401, message: 'Unauthorized'};
             } else {
                 return user;
@@ -54,7 +54,12 @@ class AuthService {
     };
     signin({email, password}) {
         return this.verifyUser({email, password})
-            .then((verifiedUser) => this.signToken(verifiedUser.id));
+            .then((verifiedUser) => {
+                return {
+                    token: this.signToken(verifiedUser.id),
+                    verifiedUser,
+                }
+            });
     }
 
     register({payload}) {
