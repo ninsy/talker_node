@@ -47,6 +47,9 @@ class friendshipService {
             }
         });
     }
+    static getInvites({personInitiatorId}) {
+
+    };
 };
 
 module.exports = friendshipService;

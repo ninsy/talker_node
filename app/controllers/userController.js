@@ -84,7 +84,7 @@ class userController {
                     procedure: {method, scope: 'user'},
                     status: 400,
                     payload: `Method ${method} doesn't exist in user context.`
-                }, connection)
+                }, connection);
             }
         }
     }

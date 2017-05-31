@@ -1,8 +1,10 @@
 let EventEmitter = require('events').EventEmitter;
-let userController = require('./userController');
-let responseController = require('./responseController');
 let authService = require('../auth/authService');
+
 let authCtrl = require('../auth/authController');
+let responseController = require('./responseController');
+let userController = require('./userController');
+let friendshipController = require('./friendshipController');
 
 /**
  * Represents single connection
@@ -46,8 +48,6 @@ class ConnectionController extends EventEmitter {
     }
     onMessageHandler(message) {
         let event = JSON.parse(message);
-        console.log(`${event.procedure.scope} being emitted`);
-
         if(event.procedure.scope !== 'auth') {
             return new authService().verifyToken({metadata: event.meta})
                 .then(({id}) => {
@@ -107,7 +107,7 @@ class ConnectionController extends EventEmitter {
 
     }
     onFrendshipScope({method, payload, metadata}) {
-
+        return new friendshipController().handleRequest(this, {method, payload});
     }
     onSocialScope({method, payload, metadata}) {
 
