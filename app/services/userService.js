@@ -17,6 +17,23 @@ class userService {
             email,
         });
     }
+    static getList(payload) {
+        let searchObj = {};
+        if(payload) {
+
+            if(payload.username) {
+                searchObj.where = {
+                    $and: {
+                        username: {
+                            $like: `%${payload.username}%`
+                        }
+                    }
+                }
+            }
+        }
+
+        return Models.User.findAll(searchObj);
+    }
 };
 
 module.exports = userService;

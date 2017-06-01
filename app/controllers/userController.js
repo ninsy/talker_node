@@ -29,6 +29,10 @@ class userController {
         return userService.getOne({id: assignedUser.id})
     }
 
+    getList() {
+        return userService.getList(payload);
+    }
+
     update({id, data}) {
         return userService
             .getOne({id})
@@ -53,6 +57,22 @@ class userController {
                         procedure: {method, scope: 'user'},
                         status: 200,
                         payload: user,
+                    });
+                }).catch((err) => {
+                    this.responseCtrl.emitError({
+                        procedure: {method, scope: 'user'},
+                        status: 400,
+                        payload: err,
+                    })
+                });
+                break;
+            }
+            case 'list': {
+                this.getList(payload).then((userList) => {
+                    this.responseCtrl.emitResponse({
+                        procedure: {method, scope: 'user'},
+                        status: 200,
+                        payload: userList,
                     });
                 }).catch((err) => {
                     this.responseCtrl.emitError({
