@@ -1,65 +1,68 @@
-TODO in future:
-    upon first 'connection', user should send auth data, 
-    so that in further requests no auth-token wouldn't be neeeded
-    
-    
+
     REQUESTS
-    
     {
        procedure: {
            scope: 'user',
            method: 'register'
        },
        meta: {
-           jwt: '',
+           token: '',
        },
        payload: {
     
        }
     }
-    
-       RESPONSES
-     
-       {
-           prodecure: {
-              scope: 'user',
-              method: 'register',
-           }
-           status: 200,
-           meta: {
-           },
-           payload: {
-               message: "whatever"
-           }
+    RESPONSES
+    {
+       prodecure: {
+          scope: 'user',
+          method: 'register',
        }
+       status: 200,
+       payload: "whatever",
+    }
          
-         
-         
- // rx.js + typescript refactor
- // Sequelize models into TS classes / method with decorators - how about Bookshelf.js?
+Generic stuff ( procedure property will always be present ):
 
- // osobny config do webpacka na prod + odpowienia zmiana komendy odpalanej
- // w npm postinstall - zamiast opcji "-p" uzyc Bablify do minifikacji
-
- // [ 1 ] [ 201 ] [ jwt: 04823jdsaDSDS$#43mdsl4l3 ]
-
-
- // TODO: okreslic rodziny pakietów, każdą możliwy pakiet do przesłania / uzyskania od serwera - do README.md
-
-
- // TODO: rejestracja nowego usera
-
- // na heroku wrzucic toy-server - jak dostanie "ping" -> zwracac "pong" dla wszystkich klientów
-
- // heroku - statyczny url + port 80
- // Android: na websocketcie przesyla w odpowiednio zanumerowanym pakiecie numer + zserializowany obiekt
- // w odpowiedzi dostaje pakiet okreslajacy odpowiedz z serwera + kod odpowiedzi + ew. dodatkowe dane.
-
- // w przypadku jak rejestracja sie powiedzie - zapisanie jwt do SharedPreferences / sqlite3
-
-  // [ 743 ] [ daskjadsljkasdnldas ]
-  // [ 7XX ] - msg
-  // [ 6XX ] - uer
-  // [ 5XX ] - chat grp
-
-  // [ 666 ] [ username: "dsadsa", pass: "sadads"]
+    {
+        status: 401, 
+        payload: 'Unauthorized'
+    }
+    {
+        status: 403,
+        payload: 'Forbidden'
+    }
+ 
+ 
+Register new user:
+    
+    REQUEST
+    {
+        procedure: {
+            scope: 'auth',
+            method: 'register',
+        },
+        meta: {},
+        payload: {
+            username: 'admin',
+            password: 'admin',
+            email: 'a@a.pl',
+        },
+    };
+    RESPONSES:
+    {
+        procedure: {method: 'register', scope: 'auth'},
+        status: 200,
+        payload: 'validToken',
+    }
+    {
+        procedure: {method: 'register', scope: 'auth'},
+        status: 409,
+        payload: 'User with provided credentials already exists.',
+    }
+    {
+        procedure: {method: 'register', scope: 'auth'},
+        status: 400, 
+        payload: 'You need to provide both email and password'
+    }
+    

@@ -75,9 +75,7 @@ class ConnectionController extends EventEmitter {
                             method: event.procedure.method,
                         },
                         status: 403,
-                        payload: {
-                            message: 'Unauthorized',
-                        }
+                        payload: 'Forbidden',
                     });
                 });
         }

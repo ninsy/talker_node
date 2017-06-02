@@ -24,11 +24,11 @@ class AuthService {
             let token = metadata.token;
             if (!token) {
                 // TODO: replace with response packet
-                reject({status: 400, message: 'Unauthorized'});
+                reject({status: 401, message: 'Unauthorized'});
             } else {
                 jwt.verify(token, config.secrets.jwt, (err, decoded) => {
                     if (err) {
-                        reject({status: 400, message: 'Unauthorized'});
+                        reject({status: 401, message: 'Unauthorized'});
                     } else {
                         resolve(decoded);
                     }
@@ -63,6 +63,9 @@ class AuthService {
     }
 
     register({payload}) {
+        if(!payload.email || !payload.password) {
+            return Promise.reject({status: 400, message: 'You need to provide both email and password'})
+        }
         return userService.register(payload)
             .then((freshUser) =>  {
                 return {
