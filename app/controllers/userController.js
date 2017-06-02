@@ -29,7 +29,7 @@ class userController {
         return userService.getOne({id: assignedUser.id})
     }
 
-    getList() {
+    getList(payload) {
         return userService.getList(payload);
     }
 
@@ -57,7 +57,7 @@ class userController {
                         procedure: {method, scope: 'user'},
                         status: 200,
                         payload: user,
-                    });
+                    }, connection);
                 }).catch((err) => {
                     this.responseCtrl.emitError({
                         procedure: {method, scope: 'user'},
@@ -73,8 +73,9 @@ class userController {
                         procedure: {method, scope: 'user'},
                         status: 200,
                         payload: userList,
-                    });
+                    }, connection);
                 }).catch((err) => {
+                    console.log(err);
                     this.responseCtrl.emitError({
                         procedure: {method, scope: 'user'},
                         status: 400,

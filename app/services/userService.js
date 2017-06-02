@@ -32,7 +32,7 @@ class userService {
             }
         }
 
-        return Models.User.findAll(searchObj);
+        return Models.User.findAll();
     }
 };
 

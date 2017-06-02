@@ -43,8 +43,10 @@ class ConnectionController extends EventEmitter {
     onAuthScope({method, payload, metadata}) {
         this.authCtrl.handleRequest(this, {method, payload, metadata})
             .then((freshUser) => {
-                this.assignedUser = freshUser.sanitize();
-            });
+                if(freshUser) {
+                    this.assignedUser = freshUser.sanitize();
+                }
+            })
     }
     onMessageHandler(message) {
         let event = JSON.parse(message);
@@ -65,8 +67,12 @@ class ConnectionController extends EventEmitter {
                         metadata: event.metadata,
                     });
                 })
-                .catch(() => {
+                .catch((err) => {
                     this.connection.emit('appError', {
+                        procedure: {
+                            scope: event.procedure.scope,
+                            method: event.procedure.method,
+                        },
                         status: 403,
                         payload: {
                             message: 'Unauthorized',
@@ -96,8 +102,8 @@ class ConnectionController extends EventEmitter {
     onSendHandler(data) {
         this.connection.send(JSON.stringify(data));
     }
-    onAppErrorHandler({status = 500, payload = {message: 'Something went wrong'}}) {
-        this.connection.send(JSON.stringify({status, payload}));
+    onAppErrorHandler({procedure, status = 500, payload = {message: 'Something went wrong'}}) {
+        this.connection.send(JSON.stringify({procedure, status, payload}));
     }
     onUserScope({method, payload, metadata}) {
         let userCtrl = new userController();

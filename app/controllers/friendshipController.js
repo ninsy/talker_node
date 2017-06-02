@@ -13,7 +13,7 @@ class friendshipController {
     }
     inviteFriend(requester, {id}) {
         return friendshipService
-            .invieFriend({personInitiatorId: requester.id, personReceiverId: id})
+            .inviteFriend({personInitiatorId: requester.id, personReceiverId: id})
             .then(() => {
                 return { status: 200, payload: `User ${id} invited`};
             })
@@ -23,7 +23,7 @@ class friendshipController {
     }
     getFriendsList(requester) {
         return friendshipService
-            .getFriendsList({personInitiatorId: requester.id})
+            .getFriendsList({personId: requester.id})
             .then((friendsList) => {
                 return { status: 200, payload: friendsList };
             })
@@ -33,7 +33,7 @@ class friendshipController {
     }
     removeFriend(requester, {id}) {
         return friendshipService
-            .removeFriend({personInitiatorId: requester.id, personReceiverId: id})
+            .removeFriend({removerId: requester.id, removeeId: id})
             .then((removedFriend) => {
                 return { status: 200, payload: removedFriend};
             })
@@ -43,7 +43,7 @@ class friendshipController {
     }
     acceptFriendshipInvite(requester, {id}) {
         return friendshipService
-            .acceptFriendshipInvite({personInitiatorId: requester.id, personReceiverId: id})
+            .acceptFriendshipInvite({personReceiverId: requester.id, personInitiatorId: id})
             .then((newFriend) => {
                 return { status: 200, payload: newFriend};
             })
@@ -53,7 +53,7 @@ class friendshipController {
     }
     rejectFriendshipInvite(requester, {id}) {
         return friendshipService
-            .rejectFriendshipInvite({personInitiatorId: requester.id, personReceiverId: id})
+            .rejectFriendshipInvite({personReceiverId: requester.id, personInitiatorId: id})
             .then((newFriend) => {
                 return { status: 200, payload: newFriend};
             })
@@ -63,7 +63,7 @@ class friendshipController {
     }
     getInvitesList(requester) {
         return friendshipService
-            .getInvites({personInitiatorId: requester.id})
+            .getInvites({personReceiverId: requester.id})
             .then((invites) => {
                 return { status: 200, payload: invites};
             })
@@ -73,7 +73,7 @@ class friendshipController {
     }
     handleRequest(connection, {method, payload}) {
         let selfMethods = common.getOwnFields(this);
-        if(selfMethods.indexOf(method.toLowerCase()) === -1) {
+        if(selfMethods.indexOf(method) === -1) {
             return new responseCtrl().emitError({
                 procedure: {method, scope: this.SCOPE},
                 status: 400,
@@ -85,7 +85,7 @@ class friendshipController {
                 procedure: {method, scope: this.SCOPE },
                 status,
                 payload,
-            });
+            }, connection);
         });
     }
 }
