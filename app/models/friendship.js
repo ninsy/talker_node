@@ -22,11 +22,14 @@ module.exports = function (sequelize, DataTypes) {
         classMethods: {
             associate: function (Models) {
                 Friendship.belongsTo(Models.User, {
+                    as: 'initiator',
                     foreignKey: 'personInitiatorId',
                 });
                 Friendship.belongsTo(Models.User, {
+                    as: 'receiver',
                     foreignKey: 'personReceiverId',
                 });
+
             }
         }
     });

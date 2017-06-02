@@ -45,6 +45,14 @@ module.exports = function(sequelize, DataTypes) {
                 User.hasMany(models.Image, {
                     foreignKey: 'avatarId'
                 });
+                User.hasMany(models.Friendship, {
+                    foreignKey: 'personInitiatorId',
+                    as: 'initiator',
+                });
+                User.hasMany(models.Friendship, {
+                    foreignKey: 'personReceiverId',
+                    as: 'receiver',
+                })
             }
         }
     });

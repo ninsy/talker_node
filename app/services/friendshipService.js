@@ -55,22 +55,22 @@ class friendshipService {
         });
     }
     static getInvites({personReceiverId}) {
-        return Models.Friendship.findAll({
+        return Models.User.findAll({
             where: {
-                personReceiverId,
-                status: 'pending',
+                id: {
+                    $not: personReceiverId,
+                },
             },
             include: [
                 {
-                    model: Models.User,
+                    model: Models.Friendship,
+                    as: 'initiator',
                     where: {
-                        id: Models.sequelize.col("Friendship.personInitiatorId")
+                        personInitiatorId: Models.sequelize.col("User.id")
                     },
-                    required: true
+                    required: true,
                 }
             ]
-        }).then((results) => {
-            return results.map(result => result.User)
         });
     };
 };

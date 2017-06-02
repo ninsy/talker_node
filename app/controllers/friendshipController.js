@@ -68,7 +68,7 @@ class friendshipController {
                 return { status: 200, payload: invites};
             })
             .catch((err) => {
-
+                return err;
             });
     }
     handleRequest(connection, {method, payload}) {
@@ -80,13 +80,20 @@ class friendshipController {
                 payload: `Method ${method} doesn't exist in user context.`
             }, connection);
         }
-        return this[method](connection.assignedUser, payload).then(({status, payload}) => {
-            return new responseCtrl().emitResponse({
-                procedure: {method, scope: this.SCOPE },
-                status,
-                payload,
-            }, connection);
-        });
+        return this[method](connection.assignedUser, payload)
+            .then(({status, payload}) => {
+                return new responseCtrl().emitResponse({
+                    procedure: {method, scope: this.SCOPE },
+                    status,
+                    payload,
+                }, connection);
+            }).catch(err => {
+                return new responseCtrl().emitError({
+                    procedure: {method, scope: this.SCOPE},
+                    status: err.status || 400,
+                    payload: err,
+                }, connection);
+            });
     }
 }
 
