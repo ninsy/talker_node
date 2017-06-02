@@ -6,7 +6,7 @@ let local = `localhost:5000`;
 let token = null,
     me = null;
 
-const ws = new websocket(`ws://${local}`);
+const ws = new websocket(`ws://${heroku}`);
 
 
 function registerMsg() {

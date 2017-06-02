@@ -15,6 +15,10 @@ class responseController {
         if(procedure === undefined || targets === undefined || !targets.length ||( status === undefined && payload === undefined)) {
             return;
         }
+        console.log("Emitting: ");
+        console.log(status);
+        console.log(procedure);
+        console.log(payload);
         targets.forEach((target) => {
             target.connection.emit('send', {
                 procedure,
@@ -27,11 +31,16 @@ class responseController {
         if(procedure === undefined || target === undefined) {
             return;
         }
+        console.log("Emitting: ");
+        console.log(status);
+        console.log(procedure);
+        console.log(payload);
         target.connection.emit('appError', {
             procedure,
             status,
             payload,
         });
+
     }
 }
 
