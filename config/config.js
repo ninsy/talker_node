@@ -24,7 +24,7 @@ let config = ((env = 'development') => {
                 user: process.env.DB_USER,
                 logging: console.log,
                 pool: {
-                    max: 4,
+                    max: 10,
                     min: 1,
                     idle: 10000
                 }

@@ -1,3 +1,8 @@
+TODO in future:
+    upon first 'connection', user should send auth data, 
+    so that in further requests no auth-token wouldn't be neeeded
+    
+    
     REQUESTS
     
     {

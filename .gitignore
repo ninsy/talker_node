@@ -1,4 +1,5 @@
 node_modules
 build
 .idea
-./toy.js
+toy.js
+toy*.js

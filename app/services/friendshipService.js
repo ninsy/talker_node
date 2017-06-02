@@ -3,42 +3,49 @@ let _  = require('lodash');
 let sequelize  = require('sequelize');
 
 class friendshipService {
-    static invieFriend({personInitiatorId, personReceiverId}) {
+    static inviteFriend({personInitiatorId, personReceiverId}) {
         return Models.Friendship.create({
             personInitiatorId,
             personReceiverId,
             status: 'pending'
         });
     }
-    static getFriendsList({personInitiatorId}) {
+    static getFriendsList({personId}) {
         return Models.Friendship.findAll({
             where: {
-                personInitiatorId,
+                $or: {
+                    personInitiatorId: personId,
+                    personReceiverId: personId,
+                },
                 status: {
                     $or: ['pending','accepted']
                 }
             }
         });
     }
-    static removeFriend({personInitiatorId, personReceiverId}) {
+    static removeFriend({removerId, removeeId}) {
         return Models.Friendship.update({status: 'rejected'}, {
             where: {
-                personInitiatorId,
-                personReceiverId,
+                $or: [
+                    {personInitiatorId: removerId, personReceiverId: removeeId},
+                    {personInitiatorId: removeeId, personReceiverId: removerId},
+                ],
                 status: 'accepted'
             }
         });
     }
-    static acceptFriendshipInvite({personInitiatorId, personReceiverId}) {
+    static acceptFriendshipInvite({personReceiverId, personInitiatorId}) {
         return Models.Friendship.update({status: 'accepted'}, {
             where: {
                 personInitiatorId,
                 personReceiverId,
                 status: 'pending',
             }
+        }).then(() => {
+            return Models.User.findById(personInitiatorId);
         });
     }
-    static rejectFriendshipInvite({personInitiatorId, personReceiverId}) {
+    static rejectFriendshipInvite({personReceiverId, personInitiatorId}) {
         return Models.Friendship.update({status: 'rejected'}, {
             where: {
                 personInitiatorId,
@@ -47,6 +54,25 @@ class friendshipService {
             }
         });
     }
+    static getInvites({personReceiverId}) {
+        return Models.Friendship.findAll({
+            where: {
+                personReceiverId,
+                status: 'pending',
+            },
+            include: [
+                {
+                    model: Models.User,
+                    where: {
+                        id: Models.sequelize.col("Friendship.personInitiatorId")
+                    },
+                    required: true
+                }
+            ]
+        }).then((results) => {
+            return results.map(result => result.User)
+        });
+    };
 };
 
 module.exports = friendshipService;

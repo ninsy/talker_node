@@ -29,6 +29,10 @@ class userController {
         return userService.getOne({id: assignedUser.id})
     }
 
+    getList(payload) {
+        return userService.getList(payload);
+    }
+
     update({id, data}) {
         return userService
             .getOne({id})
@@ -53,8 +57,25 @@ class userController {
                         procedure: {method, scope: 'user'},
                         status: 200,
                         payload: user,
-                    });
+                    }, connection);
                 }).catch((err) => {
+                    this.responseCtrl.emitError({
+                        procedure: {method, scope: 'user'},
+                        status: 400,
+                        payload: err,
+                    })
+                });
+                break;
+            }
+            case 'list': {
+                this.getList(payload).then((userList) => {
+                    this.responseCtrl.emitResponse({
+                        procedure: {method, scope: 'user'},
+                        status: 200,
+                        payload: userList,
+                    }, connection);
+                }).catch((err) => {
+                    console.log(err);
                     this.responseCtrl.emitError({
                         procedure: {method, scope: 'user'},
                         status: 400,
@@ -84,7 +105,7 @@ class userController {
                     procedure: {method, scope: 'user'},
                     status: 400,
                     payload: `Method ${method} doesn't exist in user context.`
-                }, connection)
+                }, connection);
             }
         }
     }

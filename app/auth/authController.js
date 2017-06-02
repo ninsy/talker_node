@@ -40,7 +40,7 @@ class Auth {
                         }, connection);
                         return freshUser;
                     }).catch((err) => {
-                        if(err.message === 'SequelizeUniqueConstraintError') {
+                        if(err.name === 'SequelizeUniqueConstraintError') {
                             err.status = 409;
                             err.message = `User with provided credentials already exists.`
                         }
@@ -52,7 +52,7 @@ class Auth {
                     });
             }
             default: {
-                return new responseCtrl().emitError({
+                new responseCtrl().emitError({
                     procedure: {method, scope: 'auth'},
                     status: 400,
                     payload: `Method ${method} doesn't exist in user context.`
