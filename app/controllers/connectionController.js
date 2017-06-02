@@ -49,6 +49,7 @@ class ConnectionController extends EventEmitter {
             })
     }
     onMessageHandler(message) {
+        console.log(message);
         let event = JSON.parse(message);
         if(event.procedure.scope !== 'auth') {
             return new authService().verifyToken({metadata: event.meta})
