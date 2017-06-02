@@ -4,9 +4,17 @@ let sequelize = require('sequelize');
 
 class userService {
     static getOne({id}) {
-        return Models.User.findById(id);
+        return Models.User.findById(id)
+            .then(user => {
+                return !user
+                    ? Promise.reject({status: 404, message: `User with id ${id} doesn't exist.`})
+                    : user;
+            })
     }
     static update({current, data}) {
+        if(!current) {
+           return Promise.reject({status: 400, message: 'Missing data object'});
+        }
         _.merge(current, data);
         return current.save();
     }
