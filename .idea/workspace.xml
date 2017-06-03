@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="382876db-976f-4df5-925d-0f0001995dce" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/controllers/userEntityController.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/services/userService.js" afterPath="$PROJECT_DIR$/app/services/userService.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/toy.js" afterPath="$PROJECT_DIR$/toy.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/friendshipController.js" afterPath="$PROJECT_DIR$/app/controllers/friendshipController.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/services/friendshipService.js" afterPath="$PROJECT_DIR$/app/services/friendshipService.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,72 +19,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="connectionController.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/connectionController.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="105" column="5" lean-forward="true" selection-start-line="105" selection-start-column="5" selection-end-line="105" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="toy1.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/toy1.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="8" column="39" lean-forward="false" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="userService.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/services/userService.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="toyGet404.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/toyGet404.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="12" column="17" lean-forward="false" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="toyRejecterFriend.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/toyRejecterFriend.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="85" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="toyFakeInvite1.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/toyFakeInvite1.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="26" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="242">
-                <caret line="199" column="4" lean-forward="false" selection-start-line="199" selection-start-column="4" selection-end-line="203" selection-end-column="5" />
+              <first_editor relative-caret-position="-3178">
+                <caret line="213" column="21" lean-forward="false" selection-start-line="213" selection-start-column="21" selection-end-line="213" selection-end-column="21" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -94,31 +32,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="userController.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/userController.js">
+      <file leaf-file-name="friendshipController.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/friendshipController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="93" column="33" lean-forward="false" selection-start-line="93" selection-start-column="33" selection-end-line="93" selection-end-column="33" />
+            <state relative-caret-position="-147">
+              <caret line="53" column="26" lean-forward="false" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="responseController.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/responseController.js">
+      <file leaf-file-name="friendshipService.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/services/friendshipService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="30" column="8" lean-forward="false" selection-start-line="30" selection-start-column="8" selection-end-line="30" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="authController.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/auth/authController.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="35" column="26" lean-forward="false" selection-start-line="35" selection-start-column="26" selection-end-line="35" selection-end-column="26" />
+            <state relative-caret-position="693">
+              <caret line="33" column="43" lean-forward="false" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -212,10 +140,8 @@
         <option value="$PROJECT_DIR$/toyFakeInvite.js" />
         <option value="$PROJECT_DIR$/toyFakeInvite1.js" />
         <option value="$PROJECT_DIR$/app/controllers/responseController.js" />
-        <option value="$PROJECT_DIR$/app/controllers/friendshipController.js" />
         <option value="$PROJECT_DIR$/app/models/friendship.js" />
         <option value="$PROJECT_DIR$/app/models/user.js" />
-        <option value="$PROJECT_DIR$/app/services/friendshipService.js" />
         <option value="$PROJECT_DIR$/toyRejecterFriend.js" />
         <option value="$PROJECT_DIR$/app/models/db.js" />
         <option value="$PROJECT_DIR$/todo.txt" />
@@ -225,6 +151,8 @@
         <option value="$PROJECT_DIR$/toy.js" />
         <option value="$PROJECT_DIR$/app/services/userService.js" />
         <option value="$PROJECT_DIR$/toyGet404.js" />
+        <option value="$PROJECT_DIR$/app/services/friendshipService.js" />
+        <option value="$PROJECT_DIR$/app/controllers/friendshipController.js" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -293,6 +221,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TalkerNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TalkerNode" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -869,12 +815,12 @@
       <workItem from="1496412633801" duration="5954000" />
       <workItem from="1496420849008" duration="368000" />
       <workItem from="1496422304023" duration="4267000" />
-      <workItem from="1496431633324" duration="6706000" />
+      <workItem from="1496431633324" duration="9899000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="167988000" />
+    <option name="totallyTimeSpent" value="171181000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1" y="0" width="1918" height="1029" extended-state="0" />
@@ -1083,7 +1029,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/services/friendshipService.js</url>
-          <line>26</line>
+          <line>43</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1118,17 +1064,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/services/friendshipService.js</url>
-          <line>44</line>
+          <line>61</line>
           <option name="timeStamp" value="129" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/services/friendshipService.js</url>
-          <line>37</line>
+          <line>54</line>
           <option name="timeStamp" value="130" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/services/friendshipService.js</url>
-          <line>57</line>
+          <line>74</line>
           <option name="timeStamp" value="136" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1150,7 +1096,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/services/friendshipService.js</url>
-          <line>48</line>
+          <line>65</line>
           <properties />
           <option name="timeStamp" value="143" />
         </line-breakpoint>
@@ -1406,22 +1352,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/services/friendshipService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="26" column="8" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/friendshipController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="53" column="26" lean-forward="false" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/db.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="354">
@@ -1542,11 +1472,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/services/friendshipService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="693">
+          <caret line="33" column="43" lean-forward="false" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/friendshipController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-147">
+          <caret line="53" column="26" lean-forward="false" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="242">
-            <caret line="199" column="4" lean-forward="false" selection-start-line="199" selection-start-column="4" selection-end-line="203" selection-end-column="5" />
+          <first_editor relative-caret-position="-3178">
+            <caret line="213" column="21" lean-forward="false" selection-start-line="213" selection-start-column="21" selection-end-line="213" selection-end-column="21" />
             <folding />
           </first_editor>
           <second_editor />

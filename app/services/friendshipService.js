@@ -11,17 +11,34 @@ class friendshipService {
         });
     }
     static getFriendsList({personId}) {
-        return Models.Friendship.findAll({
+        return Models.User.findAll({
             where: {
-                $or: {
-                    personInitiatorId: personId,
-                    personReceiverId: personId,
+                id: personId,
+            },
+            include: [
+                {
+                    model: Models.Friendship,
+                    as: 'initiator',
+                    where: {
+                        status: {
+                            $or: ['pending','accepted']
+                        },
+                        personInitiatorId: Models.sequelize.col("User.id")
+                    },
+                    required: true,
                 },
-                status: {
-                    $or: ['pending','accepted']
-                }
-            }
+                {
+                    model: Models.Friendship,
+                    as: 'receiver',
+                    where: {
+                        status: 'accepted',
+                        personReceiverId: Models.sequelize.col("User.id")
+                    },
+                    required: true,
+                },
+            ]
         });
+
     }
     static removeFriend({removerId, removeeId}) {
         return Models.Friendship.update({status: 'rejected'}, {

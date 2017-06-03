@@ -15,7 +15,7 @@ class friendshipController {
         return friendshipService
             .inviteFriend({personInitiatorId: requester.id, personReceiverId: id})
             .then(() => {
-                return { status: 200, payload: `User ${id} invited`};
+                return { status: 200, payload: `User with id ${id} invited`};
             })
             .catch((err) => {
 
@@ -54,8 +54,8 @@ class friendshipController {
     rejectFriendshipInvite(requester, {id}) {
         return friendshipService
             .rejectFriendshipInvite({personReceiverId: requester.id, personInitiatorId: id})
-            .then((newFriend) => {
-                return { status: 200, payload: newFriend};
+            .then(() => {
+                return { status: 200, payload: `Rejected invite from user with id ${id}`};
             })
             .catch((err) => {
 
