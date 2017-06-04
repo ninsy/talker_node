@@ -36,9 +36,6 @@ module.exports = function(sequelize, DataTypes) {
             type: Sequelize.INTEGER,
             defaultValue: 0,
         },
-        dateJoined: {
-            type: Sequelize.DATE,
-        }
     }, {
         hooks: {
             // TODO: websocket notifications

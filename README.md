@@ -378,3 +378,25 @@ Reject friendship invite
         status: 200,
         payload: `Rejected invite from user with id 1}`
     }
+    
+#### Group chat scope
+
+    REQUEST
+    {
+        procedure: {
+            scope: 'groupChat',
+            method: 'rejectFriendshipInvite',
+        },
+        meta: {
+            token: "validToken"
+        },
+        payload: {
+            id: 1
+        },
+    };
+    RESPONSES:
+    {
+        procedure: {method: 'rejectFriendshipInvite', scope: 'friendship'},
+        status: 200,
+        payload: `Rejected invite from user with id 1}`
+    }

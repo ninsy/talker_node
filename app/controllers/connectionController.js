@@ -5,6 +5,8 @@ let authCtrl = require('../auth/authController');
 let responseController = require('./responseController');
 let userController = require('./userController');
 let friendshipController = require('./friendshipController');
+let groupChatCtrl = require('./groupChatController');
+let groupChatService = require('../services/groupChatService');
 
 /**
  * Represents single connection
@@ -16,6 +18,7 @@ class ConnectionController extends EventEmitter {
         this.id = id;
         this.isAlive = true;
         this.authCtrl = new authCtrl();
+        this.chatRooms = {};
         // TODO: what should be contained in 'type' exactly? scope of action / remote procedure call ?
         //
         this.connection
@@ -34,7 +37,6 @@ class ConnectionController extends EventEmitter {
 
             // CUSTOM, SELF-DEFINED SCOPES - ASSUMING THAT AT THIS POINT USER HAS BEEN AUTHORIZED
             .on('user', this.onUserScope.bind(this))
-            .on('chatMessage', this.onMessageScope.bind(this))
             .on('friendship', this.onFrendshipScope.bind(this))
             .on('social', this.onSocialScope.bind(this))
             .on('groupChat', this.onGroupChatScope.bind(this))
@@ -45,6 +47,11 @@ class ConnectionController extends EventEmitter {
             .then((freshUser) => {
                 if(freshUser) {
                     this.assignedUser = freshUser.sanitize();
+                    // TODO: populate sb's groupChats
+                    groupChatService.loggedUserChatRooms()
+                        .then(chatRooms => {
+
+                        });
                 }
             })
     }
@@ -108,9 +115,6 @@ class ConnectionController extends EventEmitter {
         let userCtrl = new userController();
         userCtrl.handleRequest(this, {method, metadata, payload});
     }
-    onMessageScope({method, payload, metadata}) {
-
-    }
     onFrendshipScope({method, payload, metadata}) {
         return new friendshipController().handleRequest(this, {method, payload});
     }
@@ -118,8 +122,20 @@ class ConnectionController extends EventEmitter {
 
     }
     onGroupChatScope({method, payload, metadata}) {
+        let groupChatCtrl;
+        if(method === 'newChat') {
+            groupChatCtrl = new groupChatCtrl(this.assignedUser, payload.invitees)
+        } else {
+
+            // TODO: first,
+            // TODO: lookup + serve appropriate stuff.
+
+
+        }
+
 
     }
 }
+
 
 module.exports = ConnectionController;
