@@ -1,5 +1,7 @@
 let instance = null;
 
+let AppRef = require('../app');
+
 let requiredConnectionParamEmitError = () => {
     throw `Method emitError must receive target [ connectionController ] parameter!`;
 };
@@ -10,6 +12,16 @@ class responseController {
             instance = this;
         }
         return instance;
+    }
+    emitResponseByUsedIds({procedure, status, payload},  ...targets ) {
+        let conns = new AppRef().getConnections(...targets);
+        conns.forEach(conn => {
+            conn.emit('send', {
+                procedure,
+                status,
+                payload,
+            })
+        });
     }
     emitResponse({procedure, status, payload},  ...targets ) {
         if(procedure === undefined || targets === undefined || !targets.length ||( status === undefined && payload === undefined)) {

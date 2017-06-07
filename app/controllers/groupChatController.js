@@ -7,6 +7,7 @@ let privilegeService = require('../services/privilegeService');
 let responseCtrl = require('./responseController');
 let common = require('../common/common');
 
+
 /**
  * Each instance of it represents separate groupChat
  */
@@ -21,13 +22,24 @@ class groupChatController {
 
         this.privilegeService = new privilegeService();
         this.groupChatService = new groupChatService();
+        this.responseCtrl = new responseCtrl();
 
         return this.groupChatService.createChatRoom()
             .then(chatRoom => {
                 return this.groupChatService.addMembers(chatRoom.id, this.privilegeService.ROLES.OWNER, this.creator.id)
                     .then(_ => {
-                        return this.groupChatService.addMembers(chatRoom.id, this.privilegeService.ROLES.PARTICIPANT, ...this.participants.map(p => p.id))
-                            .then(_ => chatRoom);
+                        return this.groupChatService.addMembers(chatRoom.id, this.privilegeService.ROLES.PARTICIPANT, ...this.participants)
+                            .then(_ => {
+                                this.responseCtrl.emitResponseByUsedIds({
+                                    procedure: {
+                                        scope: this.SCOPE,
+                                        method: 'chatJoinRequest',
+                                    },
+                                    status: 200,
+                                    payload: chatRoom,
+                                }, ...this.participants);
+                                return chatRoom;
+                            });
                     });
             })
     }

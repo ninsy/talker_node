@@ -8,13 +8,13 @@ let ID = 0;
 
 class App {
     constructor(CONFIG) {
-        if(instance) {
+        if (instance) {
             return instance;
         }
         instance = this;
 
         this.CONFIG = CONFIG;
-        this.clients = {};
+        this.clients = [];
         this.ctx = new WebSocket.Server({
             port: this.CONFIG.port,
             clientTracking: true,
@@ -23,14 +23,20 @@ class App {
         this.ctx.on('connection', this.spawnConn);
         console.log(`server running on port: ${this.CONFIG.port}`);
     }
+
     spawnConn(ws) {
-        let newConn = new connectionController(ws, ID++);
-        this.clients[newConn.id] = newConn;
+        this.clients.push(new connectionController(ws, ID++));
+    }
+
+    getConnections(...soughtIds) {
+        return soughtIds.map(id => {
+            return this.clients.find(client => client.assignedUser.id === id);
+        });
     }
     checkTimeout() {
         setInterval(() => {
             this.clients.forEach((client) => {
-                if(!client.isAlive) {
+                if (!client.isAlive) {
                     client.onTimeoutHandler();
                     delete this.clients[client.id];
                 }
@@ -39,9 +45,10 @@ class App {
             })
         }, 1000 * 30)
     }
+
     broadcast(message) {
         Object.entries(this.clients).forEach(([id, client]) => {
-            if(client.connection.readyState === WebSocket.OPEN) {
+            if (client.connection.readyState === WebSocket.OPEN) {
                 client.onSendHandler(message);
             }
         });
