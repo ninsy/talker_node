@@ -6,7 +6,7 @@ let local = `localhost:5000`;
 let token = null,
     me = null;
 
-const ws = new websocket(`ws://${heroku}`);
+const ws = new websocket(`ws://${local}`);
 
 
 function registerMsg() {
@@ -19,9 +19,9 @@ function registerMsg() {
 
         },
         payload: {
-            username: 'admin',
-            password: 'admin',
-            email: 'a@a.pl',
+            username: 'aasdsm1in',
+            password: 'adm1in',
+            email: 'a1as@a.pl',
         },
     };
 }

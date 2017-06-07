@@ -48,9 +48,12 @@ class ConnectionController extends EventEmitter {
                 if(freshUser) {
                     this.assignedUser = freshUser.sanitize();
                     // TODO: populate sb's groupChats
-                    groupChatService.loggedUserChatRooms()
+                    return new groupChatService().loggedUserChatRooms({userId: this.assignedUser.id})
                         .then(chatRooms => {
+                            chatRooms.forEach(chatRoom => {
+                                this.chatRooms[chatRoom.id] = chatRoom;
 
+                            });
                         });
                 }
             })
@@ -122,18 +125,28 @@ class ConnectionController extends EventEmitter {
 
     }
     onGroupChatScope({method, payload, metadata}) {
-        let groupChatCtrl;
+
         if(method === 'newChat') {
-            groupChatCtrl = new groupChatCtrl(this.assignedUser, payload.invitees)
+
+            return new groupChatCtrl(this.assignedUser, payload.invitees)
+                .then(chatRoom => {
+                    this.chatRooms[chatRoom.id] = chatRoom;
+                    this.connection.emit('send', {
+                        procedure: {
+                            scope: 'groupChat',
+                            method,
+                        },
+                        status: 200,
+                        payload: chatRoom,
+                    });
+                });
+
         } else {
 
-            // TODO: first,
-            // TODO: lookup + serve appropriate stuff.
-
+            let room = Object.keys(this.chatRooms).find(r => r.id === payload.roomId);
+            room.handleRequest(this, {method, payload});
 
         }
-
-
     }
 }
 

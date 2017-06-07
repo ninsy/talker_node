@@ -18,14 +18,18 @@ class groupChatController {
 
         this.creator = creator;
         this.participants = initialParticipants;
-q
-        privilegeService.setRole(privilegeService.ROLES.OWNER, this.creator.id);
-        this.participants.forEach(participant => privilegeService.setRole(privilegeService.ROLES.PARTICIPANT, participant.id));
 
-        return {
-            id: new Date() *1,
-            groupChat: this,
-        }
+        this.privilegeService = new privilegeService();
+        this.groupChatService = new groupChatService();
+
+        return this.groupChatService.createChatRoom()
+            .then(chatRoom => {
+                return this.groupChatService.addMembers(chatRoom.id, this.privilegeService.ROLES.OWNER, this.creator.id)
+                    .then(_ => {
+                        return this.groupChatService.addMembers(chatRoom.id, this.privilegeService.ROLES.PARTICIPANT, ...this.participants.map(p => p.id))
+                            .then(_ => chatRoom);
+                    });
+            })
     }
     setPrivilege() {
 
@@ -71,4 +75,4 @@ q
     }
 }
 
-export default  groupChatController;
+module.exports = groupChatController;

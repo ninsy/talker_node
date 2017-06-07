@@ -2,6 +2,8 @@ let Models  = require('../models/db');
 let _  = require('lodash');
 let sequelize  = require('sequelize');
 
+let privilegeService = require('./privilegeService');
+
 let instance = null;
 class groupChatService {
     constructor() {
@@ -32,13 +34,16 @@ class groupChatService {
     createChatRoom() {
         return Models.GroupChat.create();
     }
-    addMembers(groupChatId, participantPrivilegeId, ...memberIds) {
-        let promiseArr = memberIds.map(memberId => Models.GroupChatMember.create({
-            groupChatId,
-            privilegeId: participantPrivilegeId,
-            userId: memberId,
-        }));
-        return Promise.all(promiseArr);
+    addMembers(groupChatId, participantPrivilegeName, ...memberIds) {
+        return new privilegeService().getRole(participantPrivilegeName)
+            .then(privilege => {
+                let promiseArr = memberIds.map(memberId => Models.GroupChatMember.create({
+                    groupChatId,
+                    privilegeId: privilege.id,
+                    userId: memberId,
+                }));
+                return Promise.all(promiseArr);
+            });
     }
 }
 

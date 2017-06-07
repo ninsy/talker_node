@@ -3,7 +3,7 @@ let _ = require('lodash');
 let sequelize = require('sequelize');
 
 class socialGroupService {
-    static invite({socialId, ...personReceiverIds}) {
+    static invite(socialId, ...personReceiverIds) {
         let invitePromiseArr = personReceiverIds.map((userId) => Models.UserToSocial.create({where: {socialId, userId}}));
         return Promise.all(invitePromiseArr).then(() => {
             personReceiverIds.forEach((userId) => {
@@ -25,7 +25,7 @@ class socialGroupService {
     static getSocialGroupMemberList({socialGroupId}) {
 
     }
-    static removeMember({...personReceiverIds}) {
+    static removeMember(personInitiatorId, ...personReceiverIds) {
         return Models.Friendship.update({status: 'rejected'}, {
             where: {
                 personInitiatorId,

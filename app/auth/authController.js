@@ -21,7 +21,7 @@ class Auth {
                             status: 200,
                             payload: token
                         }, connection);
-                        return verifiedUser;
+                        return Promise.reject(verifiedUser);
                     }).catch((err) => {
                         new responseCtrl().emitError({
                             procedure: {method, scope: 'auth'},
