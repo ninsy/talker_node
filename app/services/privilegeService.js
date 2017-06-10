@@ -8,18 +8,25 @@ let instance = null;
  * priviledges in form of [ READ, WRITE, EXECUTE ]
  */
 
+// instance.ROLES = {
+//     OWNER: [true, true, true],
+//     MOD: [true, true, true],
+//     PARTICIPANT: [true, true, false],
+// };
 
 function basicSetup(privileges) {
     let promiseArr = [];
-    for(let key in Object.ownKeys(privileges)) {
+    Object.entries(privileges).forEach(([key, values]) => {
         promiseArr.push(Models.Privilege.create({
             name: key,
-            canRead: privileges[key][0],
-            canWrite: privileges[key][1],
-            canExecute: privileges[key][2],
+            canRead: values[0],
+            canWrite: values[1],
+            canExecute: values[2],
         }));
-    }
-    return Promise.all(promiseArr);
+    });
+    return Promise.all(promiseArr).then(_ => {
+        console.log(_);
+    })
 }
 
 class privilegeService {
@@ -31,23 +38,24 @@ class privilegeService {
                 MOD: [true, true, true],
                 PARTICIPANT: [true, true, false],
             };
-            return Models.Privilege.findAll({
-                where: {
-                    name: {
-                        $or: [
-                            'OWNER', 'PARTICIPANT', 'MOD'
-                        ]
-                    }
-                }
-            }).then(basicRoles => {
-                if(!basicRoles || basicRoles.length !== Object.keys(instance.ROLES).length) {
-                    return basicSetup(instance.ROLES).then(_ => instance)
-                } else {
-                    return instance;
-                }
-            })
+            instance.init();
         }
         return instance;
+    }
+    init() {
+        return Models.Privilege.findAll({
+            where: {
+                name: {
+                    $or: [
+                        'OWNER', 'PARTICIPANT', 'MOD'
+                    ]
+                }
+            }
+        }).then(basicRoles => {
+            if(!basicRoles || basicRoles.length !== Object.keys(instance.ROLES).length) {
+                return basicSetup(instance.ROLES);
+            }
+        })
     }
     getRole(name) {
         return Models.Privilege.find({

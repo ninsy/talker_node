@@ -25,7 +25,12 @@ module.exports = function(sequelize, DataTypes) {
         },
         classMethods: {
             associate: function(Models) {
-
+                GroupChat.hasMany(Models.GroupChatMember, {
+                    foreignKey: 'groupChatId',
+                });
+                GroupChat.hasMany(Models.Message, {
+                    foreignKey: 'groupChatId',
+                });
             }
         }
     });

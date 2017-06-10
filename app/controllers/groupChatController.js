@@ -26,9 +26,9 @@ class groupChatController {
 
         return this.groupChatService.createChatRoom()
             .then(chatRoom => {
-                return this.groupChatService.addMembers(chatRoom.id, this.privilegeService.ROLES.OWNER, this.creator.id)
+                return this.groupChatService.addMembers(chatRoom.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'OWNER'), this.creator.id)
                     .then(_ => {
-                        return this.groupChatService.addMembers(chatRoom.id, this.privilegeService.ROLES.PARTICIPANT, ...this.participants)
+                        return this.groupChatService.addMembers(chatRoom.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'PARTICIPANT'), ...this.participants)
                             .then(_ => {
                                 this.responseCtrl.emitResponseByUsedIds({
                                     procedure: {

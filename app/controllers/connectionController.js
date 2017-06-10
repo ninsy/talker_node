@@ -53,7 +53,8 @@ class ConnectionController extends EventEmitter {
                         .then(chatRooms => {
                             chatRooms.forEach(chatRoom => {
                                 this.chatRooms[chatRoom.id] = chatRoom;
-
+                                console.log('Assigned chat room: ');
+                                console.log(chatRoom);
                             });
                         });
                 }
@@ -138,7 +139,7 @@ class ConnectionController extends EventEmitter {
 
     onGroupChatScope({method, payload, metadata}) {
 
-        if (method === 'newChat') {
+        if (method === 'newRoom') {
 
             return new groupChatCtrl(this.assignedUser, payload.invitees)
                 .then(chatRoom => {

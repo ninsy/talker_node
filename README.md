@@ -83,7 +83,7 @@ Login:
         {
             procedure: {
                 scope: 'auth',
-                method: 'signup',
+                method: 'signin',
             },
             meta: {},
             payload: {
@@ -93,17 +93,17 @@ Login:
         };
         RESPONSES:
         {
-            procedure: {method: 'signup', scope: 'auth'},
+            procedure: {method: 'signin', scope: 'auth'},
             status: 200,
             payload: 'validToken',
         }
         {
-            procedure: {method: 'signup', scope: 'auth'},
+            procedure: {method: 'signin', scope: 'auth'},
             status: 401,
             payload: 'Unauthorized'
         }
         {
-            procedure: {method: 'signup', scope: 'auth'},
+            procedure: {method: 'signin', scope: 'auth'},
             status: 400, 
             payload: 'You need to provide both email and password'
         }
@@ -381,22 +381,40 @@ Reject friendship invite
     
 #### Group chat scope
 
+##### Pure responses:
+
+When user is being invited by someone
+
+    {
+        procedure: {method: 'chatJoinRequest', scope: 'groupChat'},
+        status: 200,
+        payload: {
+            members: [1,2,3],
+        }
+    }
+
+New chat creation
+
     REQUEST
     {
         procedure: {
             scope: 'groupChat',
-            method: 'rejectFriendshipInvite',
+            method: 'newChat',
         },
         meta: {
             token: "validToken"
         },
         payload: {
-            id: 1
+            invitees: [1,2,3]
         },
     };
     RESPONSES:
     {
-        procedure: {method: 'rejectFriendshipInvite', scope: 'friendship'},
+        procedure: {method: 'newChat', scope: 'groupChat'},
         status: 200,
-        payload: `Rejected invite from user with id 1}`
+        payload: {
+            members: [1,2,3],
+        }
     }
+    
+    

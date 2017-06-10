@@ -1,6 +1,7 @@
 let WebSocket = require('ws');
 let connectionController = require('./controllers/connectionController');
 
+
 // TODO: in future, refactor into websocket-rpc boilerplate, preferably based on TS ( with both JSON/Protobuf )
 
 let instance = null;
@@ -12,6 +13,7 @@ class App {
             return instance;
         }
         instance = this;
+
 
         this.CONFIG = CONFIG;
         this.clients = [];
