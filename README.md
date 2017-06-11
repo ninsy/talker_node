@@ -395,14 +395,40 @@ When user is being invited by someone
 
 After user has logged into, server will send all chat rooms user belongs to
 
-{
-    procedure: {
-        scope: 'groupChat',
-        method: 'myChatRooms',
-    },
-    status: 200,
-    payload: [ /*  array of chatRoom entities, will also contain all members + messages */],
-}
+    {
+        procedure: {
+            scope: 'groupChat',
+            method: 'myChatRooms',
+        },
+        status: 200,
+        payload: [
+            {
+                id: 1,
+                createdAt: Date,
+                GroupChatMembers: [
+                    {
+                        User: {
+                            id: 1,
+                            username: 'kamil',
+                            email: 'kamil@wp.pl'
+                        },
+                        Privilege: {
+                            name: 'PARTICIPANT',
+                            canRead: true,
+                            canWrite: true,
+                            canExecute: false,
+                        }
+                    },
+                    {
+                        ...
+                    }
+                ]
+            },
+            {
+                ...
+            }
+        ],
+    }
 
 ##### Regular API
 

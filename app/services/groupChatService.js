@@ -30,7 +30,14 @@ class groupChatService {
                     required: false,
                 }
             ],
-        });
+        }).then(chatRooms => {
+            chatRooms.forEach(room => {
+                room.GroupChatMembers.forEach(member => {
+                    member.User = member.User.sanitize();
+                });
+            });
+            return chatRooms;
+        })
     }
     createChatRoom() {
         return Models.GroupChat.create();
