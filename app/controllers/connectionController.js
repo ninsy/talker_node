@@ -8,6 +8,7 @@ let friendshipController = require('./friendshipController');
 let groupChatCtrl = require('./groupChatController');
 let groupChatService = require('../services/groupChatService');
 
+
 /**
  * Represents single connection
  */
@@ -46,16 +47,21 @@ class ConnectionController extends EventEmitter {
     onAuthScope({method, payload, metadata}) {
         this.authCtrl.handleRequest(this, {method, payload, metadata})
             .then((freshUser) => {
-                if (freshUser) {
-                    this.assignedUser = freshUser.sanitize();
-                    // TODO: populate sb's groupChats
+                this.assignedUser = freshUser.sanitize();
+                new responseController().addClientTuple({websocket: this.connection, assignedUser: this.assignedUser});
+                // TODO: populate sb's groupChats
+                if(method === 'signin') {
                     return new groupChatService().loggedUserChatRooms({userId: this.assignedUser.id})
                         .then(chatRooms => {
-                            chatRooms.forEach(chatRoom => {
-                                this.chatRooms[chatRoom.id] = chatRoom;
-                                console.log('Assigned chat room: ');
-                                console.log(chatRoom);
-                            });
+                            chatRooms.forEach(chatRoom => this.chatRooms[chatRoom.id] = chatRoom);
+                            new responseController().emitResponse({
+                                procedure: {
+                                    scope: 'groupChat',
+                                    method: 'myChatRooms',
+                                },
+                                status: 200,
+                                payload: chatRooms,
+                            }, this);
                         });
                 }
             })
@@ -141,7 +147,7 @@ class ConnectionController extends EventEmitter {
 
         if (method === 'newRoom') {
 
-            return new groupChatCtrl(this.assignedUser, payload.invitees)
+            return new groupChatCtrl(this.assignedUser, ...payload.invitees)
                 .then(chatRoom => {
                     this.chatRooms[chatRoom.id] = chatRoom;
                     this.connection.emit('send', {

@@ -24,9 +24,7 @@ function basicSetup(privileges) {
             canExecute: values[2],
         }));
     });
-    return Promise.all(promiseArr).then(_ => {
-        console.log(_);
-    })
+    return Promise.all(promiseArr);
 }
 
 class privilegeService {

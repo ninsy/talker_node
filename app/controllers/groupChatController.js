@@ -28,7 +28,7 @@ class groupChatController {
             .then(chatRoom => {
                 return this.groupChatService.addMembers(chatRoom.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'OWNER'), this.creator.id)
                     .then(_ => {
-                        return this.groupChatService.addMembers(chatRoom.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'PARTICIPANT'), ...this.participants)
+                        return this.groupChatService.addMembers(chatRoom.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'PARTICIPANT'), ...this.participants.map(p => p.id))
                             .then(_ => {
                                 this.responseCtrl.emitResponseByUsedIds({
                                     procedure: {
@@ -37,7 +37,7 @@ class groupChatController {
                                     },
                                     status: 200,
                                     payload: chatRoom,
-                                }, ...this.participants);
+                                }, ...this.participants.map(p => p.id));
                                 return chatRoom;
                             });
                     });

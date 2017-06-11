@@ -1,4 +1,3 @@
-let config = require('./config/config');
-let App = require('./app/app');
+let App = require('./app/app').App;
 
-let app = new App(config);
+let app = new App();

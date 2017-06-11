@@ -26,7 +26,8 @@ class groupChatService {
                     model: Models.Message,
                     where: {
                         groupChatId: Models.sequelize.col("GroupChat.id")
-                    }
+                    },
+                    required: false,
                 }
             ],
         });

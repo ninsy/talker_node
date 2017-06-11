@@ -43,12 +43,12 @@ class AuthService {
         return Models.User.findAll({where: {email: email}}).then(function (users) {
             let user = users[0];
             if (!user || !user.authenticate(password)) {
-                return {status: 401, message: 'Unauthorized'};
+                return Promise.reject({status: 401, message: 'Unauthorized'});
             } else {
                 return user;
             }
         }).catch(function (error) {
-            return {status: 500, message: error.message};
+            return Promise.reject({status: error.status || 500, message: error.message});
         })
 
     };

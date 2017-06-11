@@ -38,7 +38,7 @@ class Auth {
                              status: 200,
                              payload: token,
                         }, connection);
-                        return freshUser;
+                        return Promise.resolve(freshUser);
                     }).catch((err) => {
                         if(err.name === 'SequelizeUniqueConstraintError') {
                             err.status = 409;

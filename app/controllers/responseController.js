@@ -1,22 +1,29 @@
+let App = require('../app');
+
 let instance = null;
 
-let AppRef = require('../app');
 
-let requiredConnectionParamEmitError = () => {
-    throw `Method emitError must receive target [ connectionController ] parameter!`;
+let requiredParam = () => {
+    throw `Missing required parameter`;
 };
 
 class responseController {
     constructor() {
         if(!instance) {
             instance = this;
+            instance.clients = [];
         }
         return instance;
     }
-    emitResponseByUsedIds({procedure, status, payload},  ...targets ) {
-        let conns = new AppRef().getConnections(...targets);
-        conns.forEach(conn => {
-            conn.emit('send', {
+    addClientTuple({ websocket, assignedUser}) {
+        this.clients.push({websocket, assignedUser});
+    }
+    emitResponseByUsedIds({procedure, status, payload},  ...targetsIds ) {
+        //let conns = new App().getConnections(...targets);
+
+
+        this.clients.filter(client => targetsIds.find(id => id === client.assignedUser.id)).forEach(client => {
+            client.websocket.emit('send', {
                 procedure,
                 status,
                 payload,
@@ -39,7 +46,7 @@ class responseController {
             });
         });
     }
-    emitError({procedure, status, payload}, target = requiredConnectionParamEmitError()) {
+    emitError({procedure, status, payload}, target = requiredParam()) {
         if(procedure === undefined || target === undefined) {
             return;
         }

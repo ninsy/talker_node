@@ -381,7 +381,7 @@ Reject friendship invite
     
 #### Group chat scope
 
-##### Pure responses:
+##### Pure, server-sent responses:
 
 When user is being invited by someone
 
@@ -392,6 +392,19 @@ When user is being invited by someone
             members: [1,2,3],
         }
     }
+
+After user has logged into, server will send all chat rooms user belongs to
+
+{
+    procedure: {
+        scope: 'groupChat',
+        method: 'myChatRooms',
+    },
+    status: 200,
+    payload: [ /*  array of chatRoom entities, will also contain all members + messages */],
+}
+
+##### Regular API
 
 New chat creation
 

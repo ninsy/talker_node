@@ -8,7 +8,7 @@ let instance = null;
 let ID = 0;
 
 class App {
-    constructor(CONFIG) {
+    constructor(CONFIG = require('../config/config')) {
         if (instance) {
             return instance;
         }
@@ -23,11 +23,12 @@ class App {
         });
         this.spawnConn = this.spawnConn.bind(this);
         this.ctx.on('connection', this.spawnConn);
-        console.log(`server running on port: ${this.CONFIG.port}`);
+        console.log(`server running on port: );${this.CONFIG.port}`);
     }
 
     spawnConn(ws) {
-        this.clients.push(new connectionController(ws, ID++));
+        let x = new connectionController(ws, ID++);
+        this.clients.push(x);
     }
 
     getConnections(...soughtIds) {
@@ -57,4 +58,6 @@ class App {
     }
 }
 
-module.exports = App;
+module.exports = {
+    App,
+};
