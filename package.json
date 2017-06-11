@@ -7,7 +7,8 @@
     "node": "7.9.0"
   },
   "scripts": {
-    "start": "node index.js",
+    "init": "node init.js",
+    "start": "npm run init && node index.js",
     "nodemon": "nodemon index.js",
     "test": "mocha --compilers js:babel-register"
   },
