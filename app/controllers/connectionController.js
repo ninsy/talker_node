@@ -49,21 +49,6 @@ class ConnectionController extends EventEmitter {
             .then((freshUser) => {
                 this.assignedUser = freshUser.sanitize();
                 new responseController().addClientTuple({websocket: this.connection, assignedUser: this.assignedUser});
-                // TODO: populate sb's groupChats
-                if(method === 'signin') {
-                    return new groupChatService().loggedUserChatRooms({userId: this.assignedUser.id})
-                        .then(chatRooms => {
-                            chatRooms.forEach(chatRoom => this.chatRooms[chatRoom.id] = chatRoom);
-                            new responseController().emitResponse({
-                                procedure: {
-                                    scope: 'groupChat',
-                                    method: 'myChatRooms',
-                                },
-                                status: 200,
-                                payload: chatRooms,
-                            }, this);
-                        });
-                }
             })
     }
 
@@ -160,12 +145,26 @@ class ConnectionController extends EventEmitter {
                     });
                 });
 
+        }
+        else if(method === 'myChatRooms') {
+            return new groupChatService().loggedUserChatRooms({userId: this.assignedUser.id})
+                .then(chatRooms => {
+                    chatRooms.forEach(chatRoom => this.chatRooms[chatRoom.id] = chatRoom);
+                    new responseController().emitResponse({
+                        procedure: {
+                            scope: 'groupChat',
+                            method: 'myChatRooms',
+                        },
+                        status: 200,
+                        payload: chatRooms,
+                    }, this);
+                });
         } else {
-
             let room = Object.keys(this.chatRooms).find(r => r.id === payload.roomId);
             room.handleRequest(this, {method, payload})
 
         }
+
     }
 }
 
