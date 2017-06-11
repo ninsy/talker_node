@@ -1,6 +1,8 @@
 let authService = require('./authService');
 let responseCtrl = require('../controllers/responseController');
 
+let groupChatService = require('../services/groupChatService');
+
 let instance = null;
 
 class Auth {
@@ -16,12 +18,16 @@ class Auth {
             case 'signin': {
                 return this.authService.signin(payload)
                     .then(({token, verifiedUser}) => {
-                        new responseCtrl().emitResponse({
-                            procedure: {method, scope: 'auth'},
-                            status: 200,
-                            payload: token
-                        }, connection);
-                        return Promise.resolve(verifiedUser);
+                        return groupChatService.loggedUserChatRooms({userId: verifiedUser.id})
+                            .then(chatRooms => {
+                                new responseCtrl().emitResponse({
+                                    procedure: {method, scope: 'auth'},
+                                    status: 200,
+                                    payload: token
+                                }, connection);
+                                chatRooms = chatRooms ? chatRooms : [];
+                                return Promise.resolve({user: verifiedUser, chatRooms });
+                            });
                     }).catch((err) => {
                         new responseCtrl().emitError({
                             procedure: {method, scope: 'auth'},
@@ -38,7 +44,7 @@ class Auth {
                              status: 200,
                              payload: token,
                         }, connection);
-                        return Promise.resolve(freshUser);
+                        return Promise.resolve({user: freshUser, chatRooms: []});
                     }).catch((err) => {
                         if(err.name === 'SequelizeUniqueConstraintError') {
                             err.status = 409;

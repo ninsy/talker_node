@@ -18,8 +18,8 @@ class ConnectionController extends EventEmitter {
         this.connection = connection;
         this.id = id;
         this.isAlive = true;
-        this.authCtrl = new authCtrl();
         this.chatRooms = {};
+        this.authCtrl = new authCtrl();
         // TODO: what should be contained in 'type' exactly? scope of action / remote procedure call ?
         //
         this.connection
@@ -46,9 +46,10 @@ class ConnectionController extends EventEmitter {
 
     onAuthScope({method, payload, metadata}) {
         this.authCtrl.handleRequest(this, {method, payload, metadata})
-            .then((freshUser) => {
-                this.assignedUser = freshUser.sanitize();
+            .then(({user, chatRooms}) => {
+                this.assignedUser = user.sanitize();
                 new responseController().addClientTuple({websocket: this.connection, assignedUser: this.assignedUser});
+                chatRooms.forEach(chatRoom => this.chatRooms[chatRoom.id] = new groupChatCtrl(chatRoom));
             })
     }
 
@@ -132,24 +133,34 @@ class ConnectionController extends EventEmitter {
 
         if (method === 'newRoom') {
 
-            return new groupChatCtrl(this.assignedUser, ...payload.invitees)
+            return new groupChatCtrl(null, this.assignedUser, ...payload.invitees)
+                .init()
                 .then(chatRoom => {
-                    this.chatRooms[chatRoom.id] = chatRoom;
+
+                    this.chatRooms[chatRoom.room.id] = chatRoom;
+
+                    let members = [];
+                    members.push(...chatRoom.participants);
+                    members.push(chatRoom.creator.id);
+
+                    let returnObj = Object.assign({}, chatRoom.room.dataValues);
+                    returnObj.members = members;
+
                     this.connection.emit('send', {
                         procedure: {
                             scope: 'groupChat',
                             method,
                         },
                         status: 200,
-                        payload: chatRoom,
+                        payload: returnObj,
                     });
                 });
 
         }
         else if(method === 'myChatRooms') {
-            return new groupChatService().loggedUserChatRooms({userId: this.assignedUser.id})
+            return groupChatService.loggedUserChatRooms({userId: this.assignedUser.id})
                 .then(chatRooms => {
-                    chatRooms.forEach(chatRoom => this.chatRooms[chatRoom.id] = chatRoom);
+                    chatRooms.forEach(chatRoom => this.chatRooms[chatRoom.id] = new groupChatCtrl(chatRoom));
                     new responseController().emitResponse({
                         procedure: {
                             scope: 'groupChat',
@@ -160,9 +171,8 @@ class ConnectionController extends EventEmitter {
                     }, this);
                 });
         } else {
-            let room = Object.keys(this.chatRooms).find(r => r.id === payload.roomId);
-            room.handleRequest(this, {method, payload})
-
+            let roomId = Object.keys(this.chatRooms).find(r => r == payload.roomId);
+            this.chatRooms[roomId].handleRequest(this, {method, payload})
         }
 
     }

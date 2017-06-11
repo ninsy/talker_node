@@ -4,15 +4,8 @@ let sequelize  = require('sequelize');
 
 let privilegeService = require('./privilegeService');
 
-let instance = null;
 class groupChatService {
-    constructor() {
-        if(!instance) {
-            instance = this;
-        }
-        return instance;
-    }
-    loggedUserChatRooms({userId}) {
+    static loggedUserChatRooms({userId}) {
         return Models.GroupChat.findAll({
             include: [
                 {
@@ -39,10 +32,32 @@ class groupChatService {
             return chatRooms;
         })
     }
-    createChatRoom() {
+    static chatRoomById(id) {
+        return Models.GroupChat.findById(id, {
+            include: [
+                {
+                    model: Models.GroupChatMember,
+                    include: [Models.User, Models.Privilege],
+                },
+                {
+                    model: Models.Message,
+                    where: {
+                        groupChatId: Models.sequelize.col("GroupChat.id")
+                    },
+                    required: false,
+                }
+            ],
+        }).then(chatRoom => {
+            chatRoom.GroupChatMembers.forEach(member => {
+                member.User = member.User.sanitize();
+            });
+            return chatRoom;
+        })
+    }
+    static createChatRoom() {
         return Models.GroupChat.create();
     }
-    addMembers(groupChatId, participantPrivilegeName, ...memberIds) {
+    static addMembers(groupChatId, participantPrivilegeName, ...memberIds) {
         return new privilegeService().getRole(participantPrivilegeName)
             .then(privilege => {
                 let promiseArr = memberIds.map(memberId => Models.GroupChatMember.create({

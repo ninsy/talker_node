@@ -14,34 +14,75 @@ let common = require('../common/common');
 
 
 class groupChatController {
-    constructor(creator, ...initialParticipants) {
+    constructor(existingChat, creator, ...initialParticipants) {
         this.SCOPE = 'groupChat';
 
-        this.creator = creator;
-        this.participants = initialParticipants;
+        if(existingChat) {
+            this.creator = existingChat.GroupChatMembers.find(member => member.Privilege.name === 'OWNER' );
+            this.participants = existingChat.GroupChatMembers.filter(member => member.Privilege.name !== 'OWNER');
+            this.room = existingChat;
+        } else {
+            this.creator = creator;
+            this.participants = initialParticipants;
+        }
 
         this.privilegeService = new privilegeService();
-        this.groupChatService = new groupChatService();
         this.responseCtrl = new responseCtrl();
 
-        return this.groupChatService.createChatRoom()
+    }
+    init() {
+        return groupChatService.createChatRoom()
             .then(chatRoom => {
-                return this.groupChatService.addMembers(chatRoom.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'OWNER'), this.creator.id)
+                this.room = chatRoom;
+                return groupChatService.addMembers(this.room.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'OWNER'), this.creator.id)
                     .then(_ => {
-                        return this.groupChatService.addMembers(chatRoom.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'PARTICIPANT'), ...this.participants.map(p => p.id))
-                            .then(_ => {
-                                this.responseCtrl.emitResponseByUsedIds({
-                                    procedure: {
-                                        scope: this.SCOPE,
-                                        method: 'chatJoinRequest',
-                                    },
-                                    status: 200,
-                                    payload: chatRoom,
-                                }, ...this.participants.map(p => p.id));
-                                return chatRoom;
-                            });
+                        if(this.participants.length) {
+                            return groupChatService.addMembers(this.room.id, Object.keys(this.privilegeService.ROLES).find(n => n === 'PARTICIPANT'), ...this.participants)
+                                .then(_ => {
+
+                                    let members = [];
+                                    members.push(...this.participants);
+                                    members.push(this.creator.id);
+
+                                    let emitObj = Object.assign({}, this.room.dataValues);
+                                    emitObj.members = members;
+
+                                    this.responseCtrl.emitResponseByUsedIds({
+                                        procedure: {
+                                            scope: this.SCOPE,
+                                            method: 'chatJoinRequest',
+                                        },
+                                        status: 200,
+                                        payload: emitObj,
+                                    }, ...this.participants);
+                                    return this;
+                                });
+                        }
+                        else return this;
                     });
             })
+    }
+    inviteUser(_, {invitees}) {
+        return groupChatService
+            .addMembers(this.room.id,
+                Object.keys(this.privilegeService.ROLES).find(n => n === 'PARTICIPANT'),
+            ...invitees)
+            .then(_ => groupChatService.chatRoomById(this.room.id))
+            .then(room => {
+                this.room = room;
+                this.responseCtrl.emitResponseByUsedIds({
+                    procedure: {
+                        scope: this.SCOPE,
+                        method: 'chatJoinRequest',
+                    },
+                    status: 200,
+                    payload: this.room,
+                }, ...invitees);
+                return {
+                    status: 200,
+                    payload: this.room
+                }
+            });
     }
     setPrivilege() {
 
@@ -49,9 +90,7 @@ class groupChatController {
     sendMessage() {
 
     }
-    inviteUser() {
 
-    }
     kickUser() {
 
     }
@@ -84,6 +123,15 @@ class groupChatController {
                     payload: err,
                 }, connection);
             });
+    }
+    buildChatRoomResponseObject() {
+        let members = [];
+        members.push(...this.participants);
+        members.push(this.creator.id);
+
+        let emitObj = Object.assign({}, this.room.dataValues);
+        emitObj.members = members;
+        return emitObj;
     }
 }
 
