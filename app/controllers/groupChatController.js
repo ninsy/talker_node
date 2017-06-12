@@ -104,6 +104,16 @@ class groupChatController {
                 }
             });
     }
+    getMessages() {
+        return messageService
+            .getMessages({groupChatId: this.room.id})
+            .then(messages => {
+                return {
+                    status: 200,
+                    payload: messages,
+                }
+            });
+    }
     setPrivilege() {
 
     }

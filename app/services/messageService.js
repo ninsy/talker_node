@@ -10,6 +10,13 @@ class messageService {
             content
         })
     }
+    static getMessages({groupChatId}) {
+        return Models.Message.findAll({
+            where: {
+                groupChatId,
+            }
+        });
+    }
 };
 
 module.exports = messageService;
