@@ -89,7 +89,8 @@ class friendshipService {
                     model: Models.Friendship,
                     as: 'initiator',
                     where: {
-                        personInitiatorId: Models.sequelize.col("User.id")
+                        personInitiatorId: Models.sequelize.col("User.id"),
+                        status: 'pending'
                     },
                     required: true,
                 }
