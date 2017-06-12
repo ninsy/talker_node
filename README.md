@@ -399,6 +399,7 @@ When someone sends message, it'll be broadcasted to all users in given chat room
         procedure: { scope: 'groupChat', method: 'newMessage'},
         status: 201,
         payload: {
+            id: 1,
             groupChatId: 1, // chatId this message belongTo
             userId: 1 // author
             content: 'Hello from the other side',
@@ -481,3 +482,29 @@ Get chat rooms I belong to
         }
         
 Send new message
+
+    REQUEST
+    {
+        procedure: {
+            scope: 'groupChat',
+            method: 'newMessage',
+        },
+        meta: {
+            token,
+        },
+        payload: {
+            roomId: 1 // TO SAMO CO W ODPOWIEDZI GROUP CHAT ID,
+            content: "Hello from the other side!"
+        },
+    }
+    RESPONSE
+    {
+        procedure: { scope: 'groupChat', method: 'newMessage'},
+        status: 201,
+        payload: {
+            id: 1,
+            groupChatId: 1, // chatId this message belongTo
+            userId: 1 // author
+            content: 'Hello from the other side',
+        }
+    }
