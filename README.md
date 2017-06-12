@@ -508,3 +508,31 @@ Send new message
             content: 'Hello from the other side',
         }
     }
+    
+Get messages 
+
+    REQUEST
+    {
+        procedure: {
+            scope: 'groupChat',
+            method: 'getMessages',
+        },
+        meta: {
+            token,
+        },
+        payload: {},
+    }
+    RESPONSE
+    {
+        procedure: { scope: 'groupChat', method: 'getMessages'},
+        status: 200,
+        payload: [
+            {
+                id: 1,
+                groupChatId: 1, // chatId this message belongTo
+                userId: 1 // author
+                content: 'Hello from the other side',
+            },
+            ...
+        ]
+    }
