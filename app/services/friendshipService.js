@@ -11,31 +11,39 @@ class friendshipService {
         });
     }
     static getFriendsList({personId}) {
-        return Models.User.findAll({
-            where: {
-                id: personId,
-            },
-            include: [
-                {
-                    model: Models.Friendship,
-                    as: 'initiator',
-                    where: {
-                        status: 'accepted',
-                        personInitiatorId: Models.sequelize.col("User.id")
-                    },
-                    required: true,
+
+        let promieArr = [
+            Models.Friendship.findAll({
+                where: {
+                    status: 'accepted',
+                    $or: {
+                        personInitiatorId: personId,
+                        personReceiverId: personId,
+                    }
                 },
-                {
-                    model: Models.Friendship,
-                    as: 'receiver',
-                    where: {
-                        status: 'accepted',
-                        personReceiverId: Models.sequelize.col("User.id")
-                    },
-                    required: true,
-                },
-            ]
-        });
+            }),
+            Models.User.findAll({
+                where: {
+                    $not: {
+                        id: personId
+                    }
+                }
+            })
+        ];
+
+        return Promise.all(promieArr)
+            .then(results => {
+
+                let folks = [];
+                let [ friendShips, users] = results;
+                friendShips.forEach(friendShip => {
+                    let person = users.find(u => u.id === friendShip.personReceiverId || u.id === friendShip.personInitiatorId);
+                    if(person) {
+                        folks.push(person);
+                    }
+                });
+                return folks;
+            });
 
     }
     static removeFriend({removerId, removeeId}) {

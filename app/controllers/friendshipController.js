@@ -28,7 +28,7 @@ class friendshipController {
                 return { status: 200, payload: friendsList };
             })
             .catch((err) => {
-
+                return err;
             });
     }
     removeFriend(requester, {id}) {
@@ -81,11 +81,11 @@ class friendshipController {
             }, connection);
         }
         return this[method](connection.assignedUser, payload)
-            .then(({status, payload}) => {
+            .then((ret) => {
                 return new responseCtrl().emitResponse({
                     procedure: {method, scope: this.SCOPE },
-                    status,
-                    payload,
+                    status: ret.status,
+                    payload: ret.payload,
                 }, connection);
             }).catch(err => {
                 return new responseCtrl().emitError({
