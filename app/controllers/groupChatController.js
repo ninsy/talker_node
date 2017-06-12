@@ -70,6 +70,7 @@ class groupChatController {
             .then(_ => groupChatService.chatRoomById(this.room.id))
             .then(room => {
                 this.room = room;
+                this.participants = this.room.GroupChatMembers.map(member => member.User.id).filter(id => id !== this.creator.id);
                 this.responseCtrl.emitResponseByUsedIds({
                     procedure: {
                         scope: this.SCOPE,
@@ -84,13 +85,28 @@ class groupChatController {
                 }
             });
     }
+    newMessage(requester, payload) {
+        return messageService
+            .newMessage({userId: requester.id, groupChatId: this.room.id, content: payload.content })
+            .then(msg => {
+                let targets = [...this.participants, this.creator.id].filter(id => id !== requester.id);
+                this.responseCtrl.emitResponseByUsedIds({
+                    procedure: {
+                        scope: this.SCOPE,
+                        method: 'newMessage',
+                    },
+                    status: 201,
+                    payload: msg,
+                }, ...targets);
+                return {
+                    status: 201,
+                    payload: msg
+                }
+            });
+    }
     setPrivilege() {
 
     }
-    sendMessage() {
-
-    }
-
     kickUser() {
 
     }

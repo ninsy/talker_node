@@ -3,7 +3,13 @@ let _  = require('lodash');
 let sequelize  = require('sequelize');
 
 class messageService {
-
+    static newMessage({userId, groupChatId, content}) {
+        return Models.Message.create({
+            userId,
+            groupChatId,
+            content
+        })
+    }
 };
 
 module.exports = messageService;

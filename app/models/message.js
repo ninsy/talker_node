@@ -28,14 +28,8 @@ module.exports = function(sequelize, DataTypes) {
                 notEmpty: true
             }
         },
-        dateCreated: {
-            type: Sequelize.DATE,
-        },
     }, {
         hooks: {
-            beforeCreate: function (message, options) {
-                message.dateCreated = Sequelize.NOW;
-            },
         },
         classMethods: {
             associate: function(Models) {
