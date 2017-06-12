@@ -393,6 +393,18 @@ When user is being invited by someone
         }
     }
 
+When someone sends message, it'll be broadcasted to all users in given chat room
+
+    {
+        procedure: { scope: 'groupChat', method: 'newMessage'},
+        status: 201,
+        payload: {
+            groupChatId: 1, // chatId this message belongTo
+            userId: 1 // author
+            content: 'Hello from the other side',
+        }
+    }
+
 ##### Regular API
 
 New chat creation
@@ -467,3 +479,5 @@ Get chat rooms I belong to
                 }
             ],
         }
+        
+Send new message

@@ -20,9 +20,7 @@ class friendshipService {
                     model: Models.Friendship,
                     as: 'initiator',
                     where: {
-                        status: {
-                            $or: ['pending','accepted']
-                        },
+                        status: 'accepted',
                         personInitiatorId: Models.sequelize.col("User.id")
                     },
                     required: true,
